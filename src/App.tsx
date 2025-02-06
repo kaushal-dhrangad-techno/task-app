@@ -1,17 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from './components/ui/button'
+import { useState } from "react";
+import "./App.css";
+import Layout from "./components/layout/Layout";
+import Task from "./components/Task";
+import Sidebar from "./components/sidebar/Sidebar";
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-     <h1 className='bg-red-400'>Kaushal Dhrangad</h1>
-     <Button>Kaushal DHrnagad Button</Button>
+      <Layout>
+        {/* <Sidebar /> */}
+        <Task />
+      </Layout>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
