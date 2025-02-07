@@ -1,4 +1,5 @@
 import Sidebar from "../sidebar/Sidebar";
+import Task from "../AddTask";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
     <>
       <Sidebar />
       <main>{children}</main>
+      <Task />
     </>
   );
 };

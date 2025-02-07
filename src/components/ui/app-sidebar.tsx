@@ -69,7 +69,7 @@ const data = {
       badge: "10",
     },
   ],
-  //   navSecondary: [
+    navSecondary: [
   //     {
   //       title: "Calendar",
   //       url: "#",
@@ -254,7 +254,7 @@ const data = {
   //         },
   //       ],
   //     },
-  //   ],
+    ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

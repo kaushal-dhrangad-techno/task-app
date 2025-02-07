@@ -1,39 +1,30 @@
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Button } from "./ui/button";
+import { useSelector } from "react-redux"
+
+interface Todo {
+  title: string;
+  completed: boolean
+  // Add other properties if necessary
+}
+
+// Define the shape of the state (assuming todos is an array of Todo objects)
+interface RootState {
+  todos: Todo[];
+}
 
 const Task = () => {
+  const todos = useSelector<RootState, Todo[]>((state)=> state.todos)
   return (
     <div>
-      <Drawer>
-        <DrawerTrigger className="text-black">Open</DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <div>
-            <button>Submit</button>
-            </div>
-            <DrawerClose>
-              <div>
-              <button>Cancel</button>
-              </div>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <div>
+        Task component 
+        <ul>
+        {todos.map((todo:any)=> (
+            <li key={todo.id}>{todo.title}</li>
+          ))}
+          </ul>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Task;
+export default Task
