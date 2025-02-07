@@ -25,15 +25,25 @@ const AddTask = () => {
     setNewTodo("");
   };
   return (
-    // <div>
+    // <div className="fixed z-50 justify-center items-center">
     <Drawer>
-      <DrawerTrigger className="text-white capitalize px-4 py-2 rounded-md hover:bg-slate-900/90 bg-[#0F172A]">
-        Create new task
+      {/* <div className="flex justify-center items-end  "> */}
+      <DrawerTrigger className="text-white  capitalize px-4 py-2 w-[30%]   rounded-md ">
+        <Input
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Create New Task"
+          className="mx-auto bg-black placeholder:text-white text-white w-full rounded-full"
+        />
+        {/* Create new task */}
       </DrawerTrigger>
+      {/* </div> */}
       <DrawerContent className="w-1/2 mx-auto">
         <DrawerHeader className="flex flex-col justify-center items-center">
           <DrawerTitle>Create New Task</DrawerTitle>
-          <DrawerDescription>Once created, you can modify, delete, or undo the task at any time.</DrawerDescription>
+          <DrawerDescription>
+            Once created, you can modify, delete, or undo the task at any time.
+          </DrawerDescription>
         </DrawerHeader>
         <Input
           value={newTodo}

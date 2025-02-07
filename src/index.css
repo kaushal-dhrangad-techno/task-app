@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html {
+  /* ecedf0 MY CHOICE */
+  /* e5e7eb MY SECOND CHOICE */ 
+  background-color: #ecedf0;
+}
+
 @layer base {
   :root {
     --radius: 0.5rem
@@ -23,3 +29,4 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%}
 }
+
