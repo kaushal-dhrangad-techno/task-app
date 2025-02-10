@@ -29,7 +29,7 @@ const Command = () => {
   };
 
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const down = (e) => {
       if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setIsOpen((prev) => !prev);
@@ -41,13 +41,13 @@ const Command = () => {
   }, []);
 
   return (
-    <div className="w-[35%] mx-auto py-2">
+    <div className="w-[35%] mx-auto py-8">
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerTrigger asChild>
           <div className="relative cursor-pointer">
             <div className="flex items-center w-full px-4 py-2 bg-slate-900 text-white rounded-full border border-slate-700 hover:border-slate-600 transition-colors">
               <div className="flex-1 text-slate-400">
-                Press CTRL/⌘ J to Add New Task
+                Press Ctrl/⌘ J to Add New Task
               </div>
               <kbd className="inline-flex h-6 items-center gap-1 rounded border border-slate-700 bg-slate-800 px-2 font-mono text-sm font-medium text-slate-300">
                 <span className="text-xs">Ctrl/⌘ +</span>J
