@@ -1,3 +1,10 @@
+import { useDispatch, useSelector } from "react-redux";
+import { Checkbox } from "./ui/checkbox";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "./ui/button";
+import { deleteTodo, toggleTodo } from "../store/todoReducer";
+import { useEffect } from "react";
+
 interface Todo {
   id: string;
   title: string;
@@ -8,18 +15,16 @@ interface RootState {
   todos: Todo[];
 }
 
-import { useDispatch, useSelector } from "react-redux";
-import { Checkbox } from "./ui/checkbox";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "./ui/button";
-import { deleteTodo } from "../store/todoReducer";
-
 const Task = () => {
   const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
 
   const handleDelete = (id: string) => {
     dispatch(deleteTodo({ id }));
+  };
+
+  const handleToggleTodo = (id: string) => {
+    dispatch(toggleTodo(id));
   };
 
   return (
@@ -34,8 +39,12 @@ const Task = () => {
                 className="grid grid-cols-[auto_1fr_auto] gap-3 items-center bg-white px-4 py-2 rounded-md w-full"
                 key={todo.id}
               >
-                <Checkbox className="h-4 w-4" />
-                <p className="text-md flex justify-start text-clip pr-2">
+                <Checkbox
+                  checked={todo.completed}
+                  onClick={() => handleToggleTodo(todo.id)}
+                  className="h-4 w-4"
+                />
+                <p className={`${todo.completed ? "line-through" : ""} text-md flex justify-start text-clip pr-2`}>
                   {todo.title}
                 </p>
                 <Button

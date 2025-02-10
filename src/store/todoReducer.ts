@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the Todo type
 interface Todo {
@@ -17,29 +17,36 @@ const initialState: TodoState = {
   todos: [],
 };
 
-// Create a slice
 const todoSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState,
   reducers: {
     // Add a new Todo
-    addTodo: (state, action: PayloadAction<{ title: string; completed: boolean }>) => {
+    addTodo: (
+      state,
+      action: PayloadAction<{ title: string; completed: boolean }>
+    ) => {
       const newTodo: Todo = {
         id: Date.now().toString(),
         title: action.payload.title,
         completed: action.payload.completed,
       };
-      state.todos.push(newTodo); // Add the new Todo to the state
+      state.todos.push(newTodo); 
     },
     // Delete a Todo
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id); // Remove the Todo with the given ID
     },
+    toggleTodo: (state, action) => {
+     const todo = state.todos.find((todo) => {
+        if (todo) {
+          todo.completed = !todo.completed;
+        }
+      });
+    },
   },
 });
 
-// Export the actions to be used in components
-export const { addTodo, deleteTodo } = todoSlice.actions;
+export const { addTodo, deleteTodo, toggleTodo } = todoSlice.actions;
 
-// Export the reducer to be used in the store
 export default todoSlice.reducer;
