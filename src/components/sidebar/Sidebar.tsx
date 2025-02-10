@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/ui/app-sidebar";
+import { AppSidebar, data } from "@/components/ui/app-sidebar";
 import { NavActions } from "@/components/ui/nav-actions";
 import {
   Breadcrumb,
@@ -13,9 +13,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Task from "../Task";
+import CompletedTask from "../CompletedTask";
+import { NavLink, useLocation } from "react-router-dom";
+
 export default function Sidebar() {
   //Print Today's Date
   const today = new Date();
+  const location = useLocation();
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -36,6 +40,8 @@ export default function Sidebar() {
   } else {
     greetings = "Good Evening";
   }
+
+  const isCompletedActive = location.pathname === "/completed";
 
   return (
     <SidebarProvider>
@@ -64,6 +70,17 @@ export default function Sidebar() {
         </div>
         <Task />
         {/* <AddTask  /> */}
+        <NavLink to="/completed">
+          {isCompletedActive && (
+            <div className="mt-4 p-4 border border-gray-300 rounded-md bg-gray-100">
+              <h2 className="font-semibold text-lg">
+                You are on the Completed Tasks Page!
+              </h2>
+              <CompletedTask />
+              {/* Any extra components or content related to completed tasks can go here */}
+            </div>
+          )}
+        </NavLink>
       </SidebarInset>
     </SidebarProvider>
   );

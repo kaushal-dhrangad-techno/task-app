@@ -12,19 +12,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
+import { addTodo } from "@/store/todoReducer";
 
-const Command = () => {
+const AddTask = () => {
   const dispatch = useDispatch();
-  const [newTodo, setNewTodo] = useState("");
+  const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAddTask = () => {
-    dispatch({
-      type: "ADD_TODO",
-      payload: newTodo,
-    });
-    console.log("New todo:", newTodo);
-    setNewTodo("");
+    dispatch(addTodo({ title: newTask, completed: false })); // Dispatch the action with the correct payload structure
+    setNewTask("");
     setIsOpen(false);
   };
 
@@ -54,7 +51,7 @@ const Command = () => {
               </kbd>
             </div>
           </div>
-        </DrawerTrigger >
+        </DrawerTrigger>
 
         <DrawerContent className="mx-auto max-w-2xl justify-center flex items-center ">
           <div className="mx-auto w-full max-w-lg">
@@ -70,8 +67,8 @@ const Command = () => {
 
             <div className="p-4 pb-0">
               <Input
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
                 placeholder="Create New Task"
                 className="w-full bg-white   text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
               />
@@ -102,4 +99,4 @@ const Command = () => {
   );
 };
 
-export default Command;
+export default AddTask;
