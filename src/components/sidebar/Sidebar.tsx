@@ -13,8 +13,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Task from "../Task";
-import Test from "../Test";
-import AddTask from "../AddTask";
 export default function Sidebar() {
   //Print Today's Date
   const today = new Date();
@@ -64,7 +62,7 @@ export default function Sidebar() {
         <div className=" hidden pl-[66px] mt-[-9px] font-medium text-slate-500 md:flex dark:text-slate-400">
           {formattedDate}
         </div>
-        <Task />  
+        <Task />
         {/* <AddTask  /> */}
       </SidebarInset>
     </SidebarProvider>

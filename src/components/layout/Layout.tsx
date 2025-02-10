@@ -1,18 +1,15 @@
-import Sidebar from "../sidebar/Sidebar";
-import AddTask from "../AddTask";
+import { Outlet } from 'react-router'
+import Sidebar from '../sidebar/Sidebar'
 
-interface LayoutProps {
-  children: React.ReactNode;
+const Layout = () => {
+  return (
+    <div>
+      <Sidebar />
+      <main>
+        <Outlet/>
+      </main>
+    </div>
+  )
 }
 
-const Layout = ({ children }: LayoutProps) => {
-  return (
-    <>
-      <Sidebar />
-      <main>{children}</main>
-      {/* <AddTask /> */}
-    </>
-  );
-};
-
-export default Layout;
+export default Layout

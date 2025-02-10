@@ -3,6 +3,7 @@ import {
   AudioWaveform,
   Blocks,
   Calendar,
+  CheckSquare,
   Command,
   Home,
   Inbox,
@@ -10,6 +11,7 @@ import {
   Search,
   Settings2,
   Sparkles,
+  Square,
   Trash2,
 } from "lucide-react";
 
@@ -58,16 +60,22 @@ const data = {
     // },
     {
       title: "Home",
-      url: "#",
+      url: "/",
       icon: Home,
       isActive: true,
     },
     {
-      title: "Inbox",
-      url: "#",
-      icon: Inbox,
+      title: "Completed",
+      url: "/completed",
+      icon: CheckSquare,
       badge: "10",
     },
+    // {
+    //   title: "Inbox",
+    //   url: "#",
+    //   icon: Inbox,
+    //   badge: "10",
+    // },
   ],
     navSecondary: [
   //     {
