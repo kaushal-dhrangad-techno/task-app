@@ -42,6 +42,7 @@ export default function Sidebar() {
   }
 
   const isCompletedActive = location.pathname === "/completed";
+  const homePage = location.pathname === "/";
 
   return (
     <SidebarProvider>
@@ -69,19 +70,18 @@ export default function Sidebar() {
         <div className=" hidden pl-[66px] mt-[-9px] font-medium text-slate-500 md:flex dark:text-slate-400">
           {formattedDate}
         </div>
-        <Task />
+        {homePage && <Task />}
         {/* <AddTask  /> */}
-        <NavLink to="/completed">
+        {/* <NavLink to="/completed"> */}
           {isCompletedActive && (
-            <div className="mt-4 p-4 rounded-md ">
-              <h2 className="font-semibold text-lg">
+            <div className="">
+              {/* <h2 className="font-semibold text-lg">
                 You are on the Completed Tasks Page!
-              </h2>
-              {/* <CompletedTask /> */}
-              {/* Any extra components or content related to completed tasks can go here */}
+              </h2> */}
+              <CompletedTask />
             </div>
           )}
-        </NavLink>
+        {/* </NavLink> */}
       </SidebarInset>
     </SidebarProvider>
   );
