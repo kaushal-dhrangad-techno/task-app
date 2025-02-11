@@ -72,7 +72,7 @@ export default function Sidebar() {
         </div>
         {homePage && <Task />}
         {/* <AddTask  /> */}
-        {/* <NavLink to="/completed"> */}
+        <NavLink to="/completed">
           {isCompletedActive && (
             <div className="">
               {/* <h2 className="font-semibold text-lg">
@@ -81,7 +81,7 @@ export default function Sidebar() {
               <CompletedTask />
             </div>
           )}
-        {/* </NavLink> */}
+        </NavLink>
       </SidebarInset>
     </SidebarProvider>
   );
