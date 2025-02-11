@@ -4,13 +4,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
 import { deleteTodo, toggleTodo } from "../store/todoReducer";
 
-interface Todo {
+export interface Todo {
   id: string;
   title: string;
   completed: boolean;
 }
 
-interface RootState {
+export interface RootState {
   todos: Todo[];
 }
 
@@ -23,7 +23,9 @@ const Task = () => {
   };
 
   const handleToggleTodo = (id: string) => {
+    console.log("Before dispatch ", todos)
     dispatch(toggleTodo(id));
+    console.log("After dispatch ", todos)
   };
 
   return (
@@ -31,7 +33,9 @@ const Task = () => {
       <div className="md:pl-16 mt-5">
         <ul className="space-y-3">
           {todos.length === 0 ? (
-            <div className="flex items-center justify-center ">No tasks available</div>
+            <div className="flex items-center justify-center ">
+              No tasks available
+            </div>
           ) : (
             todos.map((todo: any) => (
               <div
@@ -43,7 +47,11 @@ const Task = () => {
                   onClick={() => handleToggleTodo(todo.id)}
                   className="h-4 w-4"
                 />
-                <p className={`${todo.completed ? "line-through" : ""} text-md flex justify-start text-clip pr-2`}>
+                <p
+                  className={`${
+                    todo.completed ? "line-through" : ""
+                  } text-md flex justify-start text-clip pr-2`}
+                >
                   {todo.title}
                 </p>
                 <Button

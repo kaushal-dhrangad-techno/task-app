@@ -73,11 +73,11 @@ export default function Sidebar() {
         {/* <AddTask  /> */}
         <NavLink to="/completed">
           {isCompletedActive && (
-            <div className="mt-4 p-4 border border-gray-300 rounded-md bg-gray-100">
+            <div className="mt-4 p-4 rounded-md ">
               <h2 className="font-semibold text-lg">
                 You are on the Completed Tasks Page!
               </h2>
-              <CompletedTask />
+              {/* <CompletedTask /> */}
               {/* Any extra components or content related to completed tasks can go here */}
             </div>
           )}

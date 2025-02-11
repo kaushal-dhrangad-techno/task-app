@@ -38,11 +38,12 @@ const todoSlice = createSlice({
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id); // Remove the Todo with the given ID
     },
     toggleTodo: (state, action) => {
-     const todo = state.todos.find((todo) => {
-        if (todo) {
-          todo.completed = !todo.completed;
-        }
-      });
+      
+     const todo = state.todos.find((todo) => todo.id === action.payload)
+     if (todo) {
+      todo.completed = !todo.completed
+     }
+      // });
     },
   },
 });
