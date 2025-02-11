@@ -111,7 +111,7 @@ export function NavActions() {
         Edit Oct 08
       </div> */}
       {/* <div className="text-sm"> */}
-        <Button variant="ghost" size="icon" className="h-15 w-15" asChild>
+        <Button variant="ghost" size="icon" className="h-15 w-15 max-sm:hidden" asChild>
           <Star />
         </Button>
       {/* </div> */}
@@ -122,7 +122,7 @@ export function NavActions() {
             asChild
               variant="ghost"
               size="icon"
-              className="h-7 w-7 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800"
+              className="max-sm:hidden h-7 w-7 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800"
             >
               <MoreHorizontal />
             </Button>

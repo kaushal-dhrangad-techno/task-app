@@ -3,7 +3,6 @@ import { Checkbox } from "./ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
 import { deleteTodo, toggleTodo } from "../store/todoReducer";
-import { useEffect } from "react";
 
 interface Todo {
   id: string;
@@ -29,10 +28,10 @@ const Task = () => {
 
   return (
     <ScrollArea className="max-h-[80vh] rounded-md">
-      <div className="pl-16 mt-5">
+      <div className="md:pl-16 mt-5">
         <ul className="space-y-3">
           {todos.length === 0 ? (
-            <div>No tasks available</div>
+            <div className="flex items-center justify-center ">No tasks available</div>
           ) : (
             todos.map((todo: any) => (
               <div

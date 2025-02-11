@@ -38,18 +38,21 @@ const AddTask = () => {
   }, []);
 
   return (
-    <div className="w-[35%] mx-auto py-2">
+    <div className="md:w-[35%] mx-auto py-2">
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerTrigger asChild>
           <div className="relative cursor-pointer">
-            <div className="flex items-center w-full px-4 py-2 bg-slate-900 text-white rounded-full border border-slate-700 hover:border-slate-600 transition-colors">
-              <div className="flex-1 text-slate-400">
-                Press CTRL/⌘ J to Add New Task
+            {/* flex items-center w-full px-4 py-2 bg-slate-900 text-white rounded-full border border-slate-700 hover:border-slate-600 transition-colors */}
+            {/* <div className="bg-green-500 "> */}
+            <div className="flex items-center text-sm rounded-md w-full px-4 py-2 bg-slate-900 text-white md:rounded-full border border-slate-700 hover:border-slate-600 transition-colors0">
+              <div className="flex-1 text-slate-400 md:text-[16px]">
+                Create New Task
               </div>
               <kbd className="inline-flex h-6 items-center gap-1 rounded border border-slate-700 bg-slate-800 px-2 font-mono text-sm font-medium text-slate-300">
-                <span className="text-xs">Ctrl/⌘ +</span>J
+                <span className="text-xs">⌘ +</span>J
               </kbd>
             </div>
+            {/* </div> */}
           </div>
         </DrawerTrigger>
 

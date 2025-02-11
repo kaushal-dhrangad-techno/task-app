@@ -54,8 +54,9 @@ export default function Sidebar() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1 text-xl font-semibold">
-                    {greetings} Kaushal!!
+                  {/* line-clamp-1 text-xl font-semibold */}
+                  <BreadcrumbPage className=" text-[14px] md:text-xl flex justify-center items-center  font-semibold">
+                    {greetings} Kaushal !
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
