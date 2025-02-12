@@ -13,15 +13,27 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { addTodo } from "@/store/todoReducer";
+import Test from "./Test";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Calendar } from "./ui/calendar";
+import { format, isBefore, startOfDay } from "date-fns";
+import { CalendarIcon, ClockIcon } from "lucide-react";
 const AddTask = () => {
   const dispatch = useDispatch();
   const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedSlots, setSelectedSlots] = useState<string[]>([]); // State to store selected time slots
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handleAddTask = () => {
     dispatch(addTodo({ title: newTask, completed: false }));
     setNewTask("");
     setIsOpen(false);
+  };
+
+  const handleSlotSelect = (slots: string[]) => {
+    console.log("Selected Time Slots:", slots);
+    setSelectedSlots(slots); // Update state with selected slots
   };
 
   useEffect(() => {
@@ -75,6 +87,61 @@ const AddTask = () => {
                 />
               </div>
 
+              {/* Date and Time slots */}
+              <div className="mt-3  flex justify-center items-center ">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className=" border  border-slate-400 flex justify-between items-center"
+                    >
+                      {selectedDate ? format(selectedDate, "PPP") : ""}
+                      <CalendarIcon className="w-5 h-5" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="start">
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      disabled={(date) =>
+                        isBefore(startOfDay(date), startOfDay(new Date()))
+                      }
+                    />
+                  </PopoverContent>
+                </Popover>
+
+                {/* Time Slot Picker with Set Time Button */}
+                <div className="flex justify-center items-center">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="mx-auto flex  border  border-slate-400 justify-between items-center"
+                      >
+                        {selectedSlots.length === 2
+                          ? `${selectedSlots[0]} - ${selectedSlots[1]}`
+                          : ""}
+                        <ClockIcon className="w-5 h-5 content-center" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent align="start">
+                      <Test onSelect={handleSlotSelect} />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+
+              {/* Show Selected Date & Time */}
+              {selectedDate && selectedSlots.length === 2 && (
+                <p className="mt-4 flex justify-center items-center text-sm text-gray-600">
+                  Selected: {format(selectedDate, "PPP")} from{" "}
+                  {selectedSlots[0]} to {selectedSlots[1]}
+                </p>
+              )}
+            </div>
+
+            <div className="mt-5">
               <DrawerFooter className="px-4 pt-2">
                 <div className="flex flex-col gap-3 w-full">
                   <Button
