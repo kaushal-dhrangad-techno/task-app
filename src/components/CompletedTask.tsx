@@ -1,13 +1,24 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./Task";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
+import { deleteTodo, toggleTodo } from "@/store/todoReducer";
 
 const CompletedTask = () => {
-  const todos = useSelector((state: RootState) => state.todos.todos);
-
+  const todos = useSelector((state: RootState) => state.todos.completedTodos);
+  const dispatch = useDispatch();
   const completedTodos = todos.filter((todo: any) => todo.completed);
   console.log(completedTodos);
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteTodo({ id }));
+  };
+
+  const handleToggleTodo = (id: string) => {
+    console.log("Before dispatch ", todos);
+    dispatch(toggleTodo(id));
+    console.log("After dispatch ", todos);
+  };
 
   return (
     <div className="md:pl-16 mt-5">
@@ -24,7 +35,7 @@ const CompletedTask = () => {
             >
               <Checkbox
                 checked={todo.completed}
-                // onClick={() => handleToggleTodo(todo.id)}
+                onClick={() => handleToggleTodo(todo.id)}
                 className="h-4 w-4"
               />
               <p
@@ -37,7 +48,7 @@ const CompletedTask = () => {
               <Button
                 variant="destructive"
                 size="sm"
-                // onClick={() => handleDelete(todo.id)}
+                onClick={() => handleDelete(todo.id)}
               >
                 Delete
               </Button>

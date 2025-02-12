@@ -10,22 +10,26 @@ interface Todo {
 // Define the state type
 interface TodoState {
   todos: Todo[];
+  completedTodos: Todo[];
 }
 
 // Define the initial state
 
 const loadTodosFromLocalstorage = () => {
   const savedTodos = localStorage.getItem("tasks");
-  return savedTodos ? JSON.parse(savedTodos) : [];
+  const parsedTodos = savedTodos ? JSON.parse(savedTodos) : [];
+  return {
+    todos: parsedTodos.filter((todo: Todo) => !todo.completed), //
+    completedTodos: parsedTodos.filter((todo: Todo) => todo.completed),
+  };
 };
 
-const savedTodosFromLocalstorage = (todos: Todo[]) => {
-  localStorage.setItem("tasks", JSON.stringify(todos));
+const savedTodosFromLocalstorage = (todos: Todo[], completedTodos: Todo[]) => {
+  let allTasks = [...todos, ...completedTodos];
+  localStorage.setItem("tasks", JSON.stringify(allTasks));
 };
 
-const initialState: TodoState = {
-  todos: loadTodosFromLocalstorage(),
-};
+const initialState: TodoState = loadTodosFromLocalstorage();
 
 const todoSlice = createSlice({
   name: "todos",
@@ -42,20 +46,38 @@ const todoSlice = createSlice({
         completed: action.payload.completed,
       };
       state.todos.push(newTodo);
-      savedTodosFromLocalstorage(state.todos)
+      savedTodosFromLocalstorage(state.todos, state.completedTodos);
     },
     // Delete a Todo
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id); // Remove the Todo with the given ID
-      savedTodosFromLocalstorage(state.todos)
+      state.completedTodos = state.completedTodos.filter(
+        (todo) => todo.id !== action.payload.id
+      ); 
+      savedTodosFromLocalstorage(state.todos, state.completedTodos);
     },
+
+    // Toggle task completed or not
     toggleTodo: (state, action) => {
-      const todo = state.todos.find((todo) => todo.id === action.payload);
-      if (todo) {
-        todo.completed = !todo.completed;
+      const todoInTodos = state.todos.find(
+        (todo) => todo.id === action.payload
+      );
+      const todoInCompleted = state.completedTodos.find(
+        (todo) => todo.id === action.payload
+      );
+      if (todoInTodos) {
+        todoInTodos.completed = !todoInTodos.completed; // Toggle completion
+        state.completedTodos.push(todoInTodos); // Add to completedTodos
+        state.todos = state.todos.filter((t) => t.id !== todoInTodos.id); // Remove from todos
       }
-      savedTodosFromLocalstorage(state.todos)
-      // });
+      else if (todoInCompleted) {
+        todoInCompleted.completed = !todoInCompleted.completed; // Toggle completion
+        state.todos.push(todoInCompleted); // Add to todos
+        state.completedTodos = state.completedTodos.filter(
+          (t) => t.id !== todoInCompleted.id // Remove from completedTodos
+        );
+      }
+      savedTodosFromLocalstorage(state.todos, state.completedTodos);
     },
   },
 });
