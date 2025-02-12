@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             {/* <Switch> */}
             <Route index element={<AddTask />} />
-            <Route path="completed" element={<CompletedTask />} />
+            <Route path="/completed" element={<CompletedTask />} />
             {/* </Switch> */}
           </Route>
           <Route path="*" element={<NoPage />} />

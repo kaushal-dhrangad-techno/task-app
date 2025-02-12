@@ -23,9 +23,9 @@ const Task = () => {
   };
 
   const handleToggleTodo = (id: string) => {
-    console.log("Before dispatch ", todos);
+    console.log("Before dispatch ", todos)
     dispatch(toggleTodo(id));
-    console.log("After dispatch ", todos);
+    console.log("After dispatch ", todos)
   };
 
   return (

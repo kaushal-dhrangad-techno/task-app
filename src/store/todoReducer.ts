@@ -10,26 +10,22 @@ interface Todo {
 // Define the state type
 interface TodoState {
   todos: Todo[];
-  completedTodos: Todo[];
 }
 
 // Define the initial state
 
 const loadTodosFromLocalstorage = () => {
   const savedTodos = localStorage.getItem("tasks");
-  const parsedTodos = savedTodos ? JSON.parse(savedTodos) : [];
-  return {
-    todos: parsedTodos.filter((todo: Todo) => !todo.completed), //
-    completedTodos: parsedTodos.filter((todo: Todo) => todo.completed),
-  };
+  return savedTodos ? JSON.parse(savedTodos) : [];
 };
 
-const savedTodosFromLocalstorage = (todos: Todo[], completedTodos: Todo[]) => {
-  let allTasks = [...todos, ...completedTodos];
-  localStorage.setItem("tasks", JSON.stringify(allTasks));
+const savedTodosFromLocalstorage = (todos: Todo[]) => {
+  localStorage.setItem("tasks", JSON.stringify(todos));
 };
 
-const initialState: TodoState = loadTodosFromLocalstorage();
+const initialState: TodoState = {
+  todos: loadTodosFromLocalstorage(),
+};
 
 const todoSlice = createSlice({
   name: "todos",
@@ -46,39 +42,20 @@ const todoSlice = createSlice({
         completed: action.payload.completed,
       };
       state.todos.push(newTodo);
-      savedTodosFromLocalstorage(state.todos, state.completedTodos);
+      savedTodosFromLocalstorage(state.todos)
     },
     // Delete a Todo
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id); // Remove the Todo with the given ID
-      state.completedTodos = state.completedTodos.filter(
-        (todo) => todo.id !== action.payload.id
-      ); 
-      savedTodosFromLocalstorage(state.todos, state.completedTodos);
+      savedTodosFromLocalstorage(state.todos)
     },
-
-    // Toggle task completed or not
     toggleTodo: (state, action) => {
-      const todoInTodos = state.todos.find(
-        (todo) => todo.id === action.payload
-      );
-      const todoInCompleted = state.completedTodos.find(
-        (todo) => todo.id === action.payload
-      );
-      if (todoInTodos) {
-        todoInTodos.completed = !todoInTodos.completed; // Toggle completion
-        state.completedTodos.push(todoInTodos); // Add to completedTodos
-        state.todos = state.todos.filter((t) => t.id !== todoInTodos.id); // Remove from todos
+      const todo = state.todos.find((todo) => todo.id === action.payload);
+      if (todo) {
+        todo.completed = !todo.completed;
       }
-      // Toggle from completedTodos to todos
-      else if (todoInCompleted) {
-        todoInCompleted.completed = !todoInCompleted.completed; // Toggle completion
-        state.todos.push(todoInCompleted); // Add to todos
-        state.completedTodos = state.completedTodos.filter(
-          (t) => t.id !== todoInCompleted.id // Remove from completedTodos
-        );
-      }
-      savedTodosFromLocalstorage(state.todos, state.completedTodos);
+      savedTodosFromLocalstorage(state.todos)
+      // });
     },
   },
 });
