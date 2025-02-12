@@ -73,14 +73,14 @@ export default function Sidebar() {
         {homePage && <Task />}
         {/* <AddTask  /> */}
         {/* <NavLink to="/completed"> */}
-          {isCompletedActive && (
-            <div className="">
-              {/* <h2 className="font-semibold text-lg">
+        {isCompletedActive && (
+          <div className="">
+            {/* <h2 className="font-semibold text-lg">
                 You are on the Completed Tasks Page!
               </h2> */}
-              <CompletedTask />
-            </div>
-          )}
+            <CompletedTask />
+          </div>
+        )}
         {/* </NavLink> */}
       </SidebarInset>
     </SidebarProvider>

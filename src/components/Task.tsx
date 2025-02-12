@@ -24,12 +24,12 @@ const Task = () => {
 
   const handleToggleTodo = (id: string) => {
     console.log("Before dispatch ", todos)
-    dispatch(toggleTodo(id));
+    dispatch(toggleTodo(id)); 
     console.log("After dispatch ", todos)
   };
 
   return (
-    <ScrollArea className="max-h-[80vh] rounded-md">
+    <ScrollArea className="max-h-[80vh] mb-14 rounded-md">
       <div className="md:pl-16 mt-5">
         <ul className="space-y-3">
           {todos.length === 0 ? (
