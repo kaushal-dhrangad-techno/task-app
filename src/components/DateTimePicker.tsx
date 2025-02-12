@@ -6,7 +6,7 @@ const predefinedSlots = [
   "04:00 PM", "05:00 PM", "06:00 PM",
 ];  
 
-const Test = ({ onSelect }: { onSelect: (slots: string[]) => void }) => {
+const DateTimePicker = ({ onSelect }: { onSelect: (slots: string[]) => void }) => {
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
   const toggleSlot = (slot: string) => {
@@ -32,7 +32,7 @@ const Test = ({ onSelect }: { onSelect: (slots: string[]) => void }) => {
         <button
           key={slot}
           className={`px-3 py-2 border rounded ${
-            selectedSlots.includes(slot) ? "bg-blue-500 text-white" : "bg-gray-200"
+            selectedSlots.includes(slot) ? "bg-slate-900 text-white" : "bg-gray-200"
           }`}
           onClick={() => toggleSlot(slot)}
         >
@@ -43,4 +43,4 @@ const Test = ({ onSelect }: { onSelect: (slots: string[]) => void }) => {
   );
 };
 
-export default Test;
+export default DateTimePicker;

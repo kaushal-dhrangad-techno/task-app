@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import AddTask from "./components/AddTask";
 import Layout from "./components/layout/Layout";
 import NoPage from "./components/NoPage";
-import Test from "./components/Test";
+import Test from "./components/DateTimePicker";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<AddTask />} />
             <Route path="/completed" element={null} />
-            <Route path="/test" element={<Test />} />
+            {/* <Route path="/test" element={<Test />} /> */}
           </Route>
           <Route path="*" element={<NoPage />} />
         </Routes>
