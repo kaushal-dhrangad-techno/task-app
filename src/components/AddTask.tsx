@@ -36,8 +36,32 @@ const AddTask = () => {
     setShowTimeSlots(false);
   };
 
+  // useEffect(() => {
+  //   console.log("Updated Selected Slots:", selectedSlots);
+  // }, [selectedSlots]);
+
   const handleAddTask = () => {
-    dispatch(addTodo({ title: newTask, completed: false }));
+    dispatch(
+      addTodo({
+        id: Date.now().toString(),
+        title: newTask,
+        completed: false,
+        selectedDate: selectedDate ? format(selectedDate, "PPP") : undefined,
+        selectedTimeSlots:
+          selectedSlots.length === 2
+            ? `${selectedSlots[0]} - ${selectedSlots[1]}`
+            : "Time is not provided",
+      })
+    );
+
+    console.log({
+      title: newTask,
+      selectedDate: selectedDate
+        ? format(selectedDate, "PPP")
+        : "No Date Selected",
+      selectedTimeSlots:
+        selectedSlots.length === 2 ? selectedSlots : "No Time Selected",
+    });
     resetSelections();
     setIsOpen(false);
   };

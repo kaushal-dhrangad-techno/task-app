@@ -2,13 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "./ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
-import { deleteTodo, toggleTodo } from "../store/todoReducer";
+import { deleteTodo, Todo, toggleTodo } from "../store/todoReducer";
+import { Badge } from "@/components/ui/badge";
 
-export interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
-}
+// export interface Todo {
+//   id: string;
+//   title: string;
+//   completed: boolean;
+//   selectedDate?: Date;
+//   selectedTimeSlots?: string[];
+// }
 
 export interface RootState {
   todos: Todo[];
@@ -23,10 +26,12 @@ const Task = () => {
   };
 
   const handleToggleTodo = (id: string) => {
-    console.log("Before dispatch ", todos)
-    dispatch(toggleTodo(id)); 
-    console.log("After dispatch ", todos)
+    // console.log("Before dispatch ", todos);
+    dispatch(toggleTodo(id));
+    // console.log("After dispatch ", todos);
   };
+
+  console.log(todos);
 
   return (
     <ScrollArea className="max-h-[80vh] mb-14 rounded-md">
@@ -37,7 +42,7 @@ const Task = () => {
               No tasks available
             </div>
           ) : (
-            todos.map((todo: any) => (
+            todos.map((todo: Todo) => (
               <div
                 className="grid grid-cols-[auto_1fr_auto] gap-3 items-center bg-white px-4 py-2 rounded-md w-full"
                 key={todo.id}
@@ -54,13 +59,21 @@ const Task = () => {
                 >
                   {todo.title}
                 </p>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(todo.id)}
-                >
-                  Delete
-                </Button>
+                <div className="flex justify-center items-center ">
+                  <Badge
+                    variant="secondary"
+                    className="flex justify-end mr-5  border border-slate-300"
+                  >
+                    {todo.selectedTimeSlots}
+                  </Badge>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(todo.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             ))
           )}

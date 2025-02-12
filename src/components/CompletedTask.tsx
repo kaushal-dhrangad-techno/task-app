@@ -3,6 +3,7 @@ import { RootState } from "./Task";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { deleteTodo, toggleTodo } from "@/store/todoReducer";
+import { Badge } from "./ui/badge";
 
 const CompletedTask = () => {
   const todos = useSelector((state: RootState) => state.todos.completedTodos);
@@ -45,13 +46,19 @@ const CompletedTask = () => {
               >
                 {todo.title}
               </p>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleDelete(todo.id)}
-              >
-                Delete
-              </Button>
+              <div className="flex justify-center items-center">
+              <Badge variant="secondary" className="flex justify-end mr-5  border border-slate-300" >
+                {todo.selectedTimeSlots}
+              </Badge>
+
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDelete(todo.id)}
+                >
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}
