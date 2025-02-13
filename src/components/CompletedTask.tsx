@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./Task";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { deleteTodo, toggleTodo } from "@/store/todoReducer";
+import { CategoryProps, deleteTodo, toggleTodo } from "@/store/todoReducer";
 import { Badge } from "./ui/badge";
 
 const CompletedTask = () => {
@@ -43,13 +43,24 @@ const CompletedTask = () => {
                   onClick={() => handleToggleTodo(todo.id)}
                   className="h-4 w-4"
                 />
-                <p
-                  className={`${
-                    todo.completed ? "line-through" : ""
-                  } text-md flex justify-start text-clip pr-2`}
-                >
-                  {todo.title}
-                </p>
+                <div className="flex justify-start items-center gap-6">
+                  <p
+                    className={`${
+                      todo.completed ? "line-through" : ""
+                    } flex justify-start items-center text-md md:text-lg text-clip pr-2`}
+                  >
+                    {todo.title}
+                  </p>
+
+                  {/* Category Badges - Wrapped in flex to align properly */}
+                  <div className="flex gap-2 flex-wrap">
+                    {todo.category.map((cat:CategoryProps, index: number) => (
+                      <Badge key={index} className="flex px-2 py-1">
+                        {cat.title}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
                 <div className="flex justify-center items-center">
                   <Badge
                     variant="secondary"

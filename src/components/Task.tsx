@@ -40,42 +40,44 @@ const Task = () => {
               </h1>
               {todos.map((todo: Todo) => (
                 <div
-                  className="grid grid-cols-[auto_1fr_auto] gap-3 items-center bg-white px-4 py-2 rounded-md w-full"
+                  className="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-center bg-white px-4 py-2 rounded-md w-full"
                   key={todo.id}
                 >
+                  {/* Checkbox */}
                   <Checkbox
                     checked={todo.completed}
                     onClick={() => handleToggleTodo(todo.id)}
                     className="h-4 w-4"
                   />
-                  <p
-                    className={`${
-                      todo.completed ? "line-through" : ""
-                    } text-md md:text-lg flex justify-start text-clip pr-2`}
-                  >
-                    {todo.title}
-                  </p>
-                  <div className="flex justify-center items-center">
 
-                  {todo.category.map((cat, index)=> (
-                    <Badge key={index}>{cat.title}</Badge>
-                  ))}
+                  {/* Task Title */}
+                  <div className="flex justify-start items-center gap-6">
+                    <p
+                      className={`${
+                        todo.completed ? "line-through" : ""
+                      } flex justify-start items-center text-md md:text-lg text-clip pr-2`}
+                    >
+                      {todo.title}
+                    </p>
+
+                    {/* Category Badges - Wrapped in flex to align properly */}
+                    <div className="flex gap-2 flex-wrap">
+                      {todo.category.map((cat, index) => (
+                        <Badge key={index} className="flex px-2 py-1">
+                          {cat.title}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex justify-center items-center ">
+
+                  {/* Time Slots & Delete Button */}
+                  <div className="flex gap-3 items-center">
                     <Badge
                       variant="secondary"
-                      className="flex justify-end mx-3 items-center   border border-slate-300 rounded-sm md:rounded-full text-[10px]"
+                      className="border border-slate-300 text-[10px]"
                     >
                       {todo.selectedTimeSlots}
                     </Badge>
-                    {/* <div className=""> */}
-                    {/* <div
-                        // variant="secondary"
-                        className="flex font-semibold text-[12px] justify-end px-1   rounded-lg  border border-slate-300"
-                      >
-                        {todo.selectedTimeSlots}
-                      </div> */}
-                    {/* </div> */}
                     <Button
                       variant="destructive"
                       size="sm"

@@ -12,28 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { addTodo, CategoryProps } from "@/store/todoReducer";
+import { addTodo } from "@/store/todoReducer";
 import { Calendar } from "./ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
-import { BetweenHorizonalEnd, CalendarIcon, ClockIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { title } from "process";
 import { Badge } from "./ui/badge";
-// import { CommandInput } from "./ui/command";
-
-const categoryList: CategoryProps[] = [
-  { title: "Work" },
-  { title: "Personal" },
-  { title: "Urgent" },
-  { title: "Study" },
-];
 
 const AddTask = () => {
   const dispatch = useDispatch();
@@ -43,14 +27,14 @@ const AddTask = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showTimeSlots, setShowTimeSlots] = useState(false);
-  const [categories, setcategories] = useState([
+  const [categories, setCategories] = useState([
     { title: "Work" },
     { title: "Personal" },
     { title: "Urgent" },
     { title: "Study" },
   ]);
   const [newCategory, setNewCategory] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState("");
 
   const resetSelections = () => {
     setNewTask("");
@@ -59,10 +43,6 @@ const AddTask = () => {
     setShowCalendar(false);
     setShowTimeSlots(false);
   };
-
-  // useEffect(() => {
-  //   console.log("Updated Selected Slots:", selectedSlots);
-  // }, [selectedSlots]);
 
   const handleAddTask = () => {
     dispatch(
@@ -75,7 +55,7 @@ const AddTask = () => {
           selectedSlots.length === 2
             ? `${selectedSlots[0]} - ${selectedSlots[1]}`
             : "Time is not provided",
-        category: [{ title: selectedCategory }],
+        category: [{ title: selectedCategories }],
       })
     );
 
@@ -86,7 +66,7 @@ const AddTask = () => {
         : "No Date Selected",
       selectedTimeSlots:
         selectedSlots.length === 2 ? selectedSlots : "No Time Selected",
-      category: [{ title: selectedCategory }],
+      category: [{ title: selectedCategories }],
     });
     resetSelections();
     setIsOpen(false);
@@ -101,13 +81,22 @@ const AddTask = () => {
       newCategory.trim() &&
       !categories.some((cat) => cat.title === newCategory)
     ) {
-      setcategories([...categories, { title: newCategory }]);
-      setSelectedCategory(newCategory);
+      setCategories([...categories, { title: newCategory }]);
+      setSelectedCategories([...selectedCategories, newCategory]);
+      setNewCategory("");
     }
     // console.log("New Category is", newCategory);
     // console.log("Selected Category is", selectedCategory);
   };
   // console.log("All categories are", categories);
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c: string) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -156,7 +145,7 @@ const AddTask = () => {
                 </DrawerDescription>
               </DrawerHeader>
 
-              <div className="p-4 pb-0">
+              <div className=" pb-0">
                 <Input
                   value={newTask}
                   autoFocus
@@ -166,29 +155,41 @@ const AddTask = () => {
                 />
                 {/* Category Selection */}
                 <div>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                  >
-                    <option value="">Select your category</option>
-                    {categories.map((category, index) => (
-                      <option key={index} value={category.title}>{category.title}</option>
-                    ))}
-                  </select>
-                  <Input
-                    value={newCategory}
-                    // autoFocus
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    placeholder="Create New Task"
-                    className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
-                  />
-                  <button onClick={handleAddCategory}>Add Category</button>
-                </div>
+                  <div className="mt-3">
+                    <h2 className="text-lg font-medium">Select Categories</h2>
 
-                {/* <CommandInput /> */}
+                    {/* Category Badges */}
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {categories.map((category, index) => (
+                        <Badge
+                          key={index}
+                          onClick={() => handleCategoryClick(category.title)}
+                          className={`cursor-pointer px-3 py-1 transition-all ${
+                            selectedCategories.includes(category.title)
+                              ? "bg-blue-500 text-white"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {category.title}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {/* Input for New Category */}
+                    <div className="flex gap-2 mt-3">
+                      <Input
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        placeholder="Add new category"
+                      />
+                      <Button onClick={handleAddCategory}>Add</Button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-3 flex justify-between items-center">
+              {/* Calendar */}
+              <div className="mt-3 flex justify-between items-center ">
                 <Button
                   variant="outline"
                   className="border border-slate-400 flex justify-between items-center"
@@ -228,7 +229,7 @@ const AddTask = () => {
                   />
                 </div>
               )}
-
+              {/* Time slots */}
               {showTimeSlots && (
                 <div className="mt-2">
                   <DateTimePicker onSelect={handleSlotSelect} />
