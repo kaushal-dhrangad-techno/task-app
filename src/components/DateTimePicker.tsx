@@ -45,7 +45,7 @@ const DateTimePicker = ({
       {predefinedSlots.map((slot) => (
         <button
           key={slot}
-          className={`px-3 py-2 border rounded ${
+          className={`px-3 py-2 border rounded hover:bg-blue-500 hover:text-slate-200 ${
             selectedSlots.includes(slot)
               ? "bg-slate-900 text-white"
               : "bg-gray-200"

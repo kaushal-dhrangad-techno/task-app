@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "@/store/todoReducer";
+import { addTodo, CategoryProps } from "@/store/todoReducer";
 import { Calendar } from "./ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
@@ -21,20 +21,21 @@ import { Badge } from "./ui/badge";
 
 const AddTask = () => {
   const dispatch = useDispatch();
-  const [newTask, setNewTask] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [newTask, setNewTask] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showTimeSlots, setShowTimeSlots] = useState(false);
-  const [categories, setCategories] = useState([
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [showTimeSlots, setShowTimeSlots] = useState<boolean>(false);
+  const [showCategory, setShowCategory] = useState<boolean>(false);
+  const [categories, setCategories] = useState<CategoryProps[]>([
     { title: "Work" },
     { title: "Personal" },
     { title: "Urgent" },
     { title: "Study" },
   ]);
-  const [newCategory, setNewCategory] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState("");
+  const [newCategory, setNewCategory] = useState<string>("");
+  const [selectedCategories, setSelectedCategories] = useState<string>("");
 
   const resetSelections = () => {
     setNewTask("");
@@ -42,23 +43,26 @@ const AddTask = () => {
     setSelectedSlots([]);
     setShowCalendar(false);
     setShowTimeSlots(false);
+    setShowCategory(false);
+    setCategories([]);
   };
 
   const handleAddTask = () => {
-    dispatch(
-      addTodo({
-        id: Date.now().toString(),
-        title: newTask,
-        completed: false,
-        selectedDate: selectedDate ? format(selectedDate, "PPP") : undefined,
-        selectedTimeSlots:
-          selectedSlots.length === 2
-            ? `${selectedSlots[0]} - ${selectedSlots[1]}`
-            : "Time is not provided",
-        category: [{ title: selectedCategories }],
-      })
-    );
-
+    if (newTask.length !== 0) {
+      dispatch(
+        addTodo({
+          id: Date.now().toString(),
+          title: newTask,
+          completed: false,
+          selectedDate: selectedDate ? format(selectedDate, "PPP") : undefined,
+          selectedTimeSlots:
+            selectedSlots.length === 2
+              ? `${selectedSlots[0]} - ${selectedSlots[1]}`
+              : "Time is not provided",
+          category: [{ title: selectedCategories }],
+        })
+      );
+    }
     console.log({
       title: newTask,
       selectedDate: selectedDate
@@ -82,7 +86,7 @@ const AddTask = () => {
       !categories.some((cat) => cat.title === newCategory)
     ) {
       setCategories([...categories, { title: newCategory }]);
-      setSelectedCategories([...selectedCategories, newCategory]);
+      setSelectedCategories(newCategory);
       setNewCategory("");
     }
     // console.log("New Category is", newCategory);
@@ -91,11 +95,12 @@ const AddTask = () => {
   // console.log("All categories are", categories);
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c: string) => c !== category)
-        : [...prev, category]
-    );
+    // setSelectedCategories((prev) =>
+    //   prev.includes(category)
+    //     ? prev.filter((c: string) => c !== category)
+    //     : [...prev, category]
+    // );
+    setSelectedCategories(category);
   };
 
   useEffect(() => {
@@ -154,37 +159,65 @@ const AddTask = () => {
                   className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
                 />
                 {/* Category Selection */}
-                <div>
-                  <div className="mt-3">
-                    <h2 className="text-lg font-medium">Select Categories</h2>
-
-                    {/* Category Badges */}
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {categories.map((category, index) => (
-                        <Badge
-                          key={index}
-                          onClick={() => handleCategoryClick(category.title)}
-                          className={`cursor-pointer px-3 py-1 transition-all ${
-                            selectedCategories.includes(category.title)
-                              ? "bg-blue-500 text-white"
-                              : "bg-gray-200 text-gray-700"
-                          }`}
-                        >
-                          {category.title}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    {/* Input for New Category */}
-                    <div className="flex gap-2 mt-3">
-                      <Input
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                        placeholder="Add new category"
-                      />
-                      <Button onClick={handleAddCategory}>Add</Button>
-                    </div>
+                <div className="category">
+                  {/* Add Button for the category */}
+                  {/* <Button
+                    variant="outline"
+                    className="border border-slate-400 flex justify-between items-center"
+                    onClick={() => {
+                      setShowCategory((prev) => !prev);
+                      setShowTimeSlots(false);
+                    }}
+                  >
+                    {selectedCategories
+                      ? selectedCategories
+                      : "Select Category"}
+                  </Button> */}
+                  <div className="flex gap-2 mt-3">
+                    <Input
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      onClick={() => {
+                        setShowCategory((prev) => !prev);
+                        setShowTimeSlots(false);
+                        setShowCalendar(false);
+                      }}
+                      placeholder="Add new category"
+                    />
+                    <Button onClick={handleAddCategory}>Add</Button>
                   </div>
+                  {showCategory && (
+                    <div className="mt-3">
+                      <h2 className="text-lg font-medium">Select Categories</h2>
+
+                      {/* Category Badges */}
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {categories.map((category, index) => (
+                          <Badge
+                            key={index}
+                            onClick={() => handleCategoryClick(category.title)}
+                            className={`cursor-pointer px-3 py-1 hover:bg-blue-600 hover:text-slate-200   transition-all ${
+                              selectedCategories === category.title
+                                ? "bg-slate-900 text-white"
+                                : "bg-gray-200 text-gray-700"
+                            }`}
+                          >
+                            {category.title}
+                          </Badge>
+                        ))}
+                      </div>
+
+                      {/* Input for New Category */}
+                      {/* <div className="flex gap-2 mt-3">
+                        <Input
+                          value={newCategory}
+                          onChange={(e) => setNewCategory(e.target.value)}
+                          placeholder="Add new category"
+                        />
+                        <Button onClick={handleAddCategory}>Add</Button>
+                      </div> */}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -196,6 +229,7 @@ const AddTask = () => {
                   onClick={() => {
                     setShowCalendar((prev) => !prev);
                     setShowTimeSlots(false);
+                    setShowCategory(false);
                   }}
                 >
                   {selectedDate ? format(selectedDate, "PPP") : "Select Date"}
@@ -207,6 +241,7 @@ const AddTask = () => {
                   onClick={() => {
                     setShowTimeSlots((prev) => !prev);
                     setShowCalendar(false);
+                    setShowCategory(false);
                   }}
                 >
                   {selectedSlots.length === 2
@@ -237,7 +272,7 @@ const AddTask = () => {
               )}
 
               {selectedDate && selectedSlots.length === 2 && (
-                <p className="mt-4 flex justify-center items-center text-sm text-gray-600">
+                <p className="mt-4 flex justify-center items-center text-sm text-gray-600 ">
                   Selected: {format(selectedDate, "PPP")} from{" "}
                   {selectedSlots[0]} to {selectedSlots[1]}
                 </p>
@@ -250,6 +285,7 @@ const AddTask = () => {
                   <Button
                     onClick={handleAddTask}
                     className="w-full bg-slate-900 text-white hover:bg-slate-800"
+                    disabled={newTask.trim() === ""}
                   >
                     Submit
                   </Button>

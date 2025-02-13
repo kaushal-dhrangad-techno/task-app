@@ -112,7 +112,7 @@ export function NavActions() {
       </div> */}
       {/* <div className="text-sm"> */}
         <Button variant="ghost" size="icon" className="h-15 w-15 max-sm:hidden" asChild>
-          <Star />
+          {/* <Star /> */}
         </Button>
       {/* </div> */}
       <Popover open={isOpen} onOpenChange={setIsOpen}>

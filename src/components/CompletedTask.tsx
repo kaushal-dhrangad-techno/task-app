@@ -25,7 +25,7 @@ const CompletedTask = () => {
     <div className="md:pl-16 mt-5">
       <ul className="space-y-3">
         {completedTodos.length === 0 ? (
-          <div className="flex items-center justify-center text-slate-900  text-2xl font-medium  ">
+          <div className="flex items-center justify-center text-slate-900  text-xl font-medium  ">
             No tasks available
           </div>
         ) : (
