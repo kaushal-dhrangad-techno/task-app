@@ -55,6 +55,12 @@ const Task = () => {
                   >
                     {todo.title}
                   </p>
+                  <div className="flex justify-center items-center">
+
+                  {todo.category.map((cat, index)=> (
+                    <Badge key={index}>{cat.title}</Badge>
+                  ))}
+                  </div>
                   <div className="flex justify-center items-center ">
                     <Badge
                       variant="secondary"

@@ -1,12 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the Todo type
+export interface CategoryProps {
+  title: string
+  emoji?: string
+}
 export interface Todo {
   id: string;
   title: string;
   completed: boolean;
   selectedDate?: Date;
   selectedTimeSlots: string[];
+  category: CategoryProps[]
 }
 
 // Define the state type
@@ -40,14 +45,15 @@ const todoSlice = createSlice({
     // Add a new Todo
     addTodo: (
       state,
-      action: PayloadAction<{ title: string; completed: boolean, selectedTimeSlots: Todo[], selectedDate:Date }>
+      action: PayloadAction<{ title: string; completed: boolean, selectedTimeSlots: Todo[], selectedDate:Date, category: CategoryProps[] }>
     ) => {
       const newTodo: Todo = {
         id: Date.now().toString(),
         title: action.payload.title,
         completed: action.payload.completed,
         selectedDate: action.payload.selectedDate,
-        selectedTimeSlots: action.payload.selectedTimeSlots
+        selectedTimeSlots: action.payload.selectedTimeSlots,
+        category: action.payload.category
       };
       state.todos.push(newTodo);
       savedTodosFromLocalstorage(state.todos, state.completedTodos);

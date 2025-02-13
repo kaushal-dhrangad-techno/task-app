@@ -12,12 +12,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "@/store/todoReducer";
+import { addTodo, CategoryProps } from "@/store/todoReducer";
 import { Calendar } from "./ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
-import { CalendarIcon, ClockIcon } from "lucide-react";
+import { BetweenHorizonalEnd, CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
-import { CommandInput } from "./ui/command";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { title } from "process";
+import { Badge } from "./ui/badge";
+// import { CommandInput } from "./ui/command";
+
+const categoryList: CategoryProps[] = [
+  { title: "Work" },
+  { title: "Personal" },
+  { title: "Urgent" },
+  { title: "Study" },
+];
 
 const AddTask = () => {
   const dispatch = useDispatch();
@@ -27,6 +43,14 @@ const AddTask = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showTimeSlots, setShowTimeSlots] = useState(false);
+  const [categories, setcategories] = useState([
+    { title: "Work" },
+    { title: "Personal" },
+    { title: "Urgent" },
+    { title: "Study" },
+  ]);
+  const [newCategory, setNewCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const resetSelections = () => {
     setNewTask("");
@@ -51,6 +75,7 @@ const AddTask = () => {
           selectedSlots.length === 2
             ? `${selectedSlots[0]} - ${selectedSlots[1]}`
             : "Time is not provided",
+        category: [{ title: selectedCategory }],
       })
     );
 
@@ -61,6 +86,7 @@ const AddTask = () => {
         : "No Date Selected",
       selectedTimeSlots:
         selectedSlots.length === 2 ? selectedSlots : "No Time Selected",
+      category: [{ title: selectedCategory }],
     });
     resetSelections();
     setIsOpen(false);
@@ -69,6 +95,19 @@ const AddTask = () => {
   const handleSlotSelect = (slots: string[]) => {
     setSelectedSlots(slots);
   };
+
+  const handleAddCategory = () => {
+    if (
+      newCategory.trim() &&
+      !categories.some((cat) => cat.title === newCategory)
+    ) {
+      setcategories([...categories, { title: newCategory }]);
+      setSelectedCategory(newCategory);
+    }
+    // console.log("New Category is", newCategory);
+    // console.log("Selected Category is", selectedCategory);
+  };
+  // console.log("All categories are", categories);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -125,6 +164,27 @@ const AddTask = () => {
                   placeholder="Create New Task"
                   className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
                 />
+                {/* Category Selection */}
+                <div>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                  >
+                    <option value="">Select your category</option>
+                    {categories.map((category, index) => (
+                      <option key={index} value={category.title}>{category.title}</option>
+                    ))}
+                  </select>
+                  <Input
+                    value={newCategory}
+                    // autoFocus
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    placeholder="Create New Task"
+                    className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
+                  />
+                  <button onClick={handleAddCategory}>Add Category</button>
+                </div>
+
                 {/* <CommandInput /> */}
               </div>
 
