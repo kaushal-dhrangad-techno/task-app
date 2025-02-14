@@ -260,7 +260,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar className="bg-red-500 border-r-0" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
-        {/* <NavMain items={data.navMain} /> */}
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
