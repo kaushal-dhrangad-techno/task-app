@@ -25,6 +25,7 @@ const Task = () => {
 
   console.log(todos);
 
+
   return (
     <ScrollArea className="max-h-[80vh] mb-14 rounded-md">
       <div className="md:pl-16 mt-3">
@@ -62,11 +63,11 @@ const Task = () => {
 
                     {/* Category Badges - Wrapped in flex to align properly */}
                     <div className="flex gap-2 flex-wrap">
-                      {todo.category.map((cat, index) => (
-                        <Badge key={index} className="flex px-2 py-1">
-                          {cat.title}
+                      {todo.category.length > 0 && todo.category[0].title && (
+                        <Badge className="flex px-2 py-1">
+                          {todo.category[0].title}
                         </Badge>
-                      ))}
+                      )}
                     </div>
                   </div>
 
