@@ -18,6 +18,7 @@ import { format, isBefore, startOfDay } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
 import { Badge } from "./ui/badge";
+import { motion } from "framer-motion";
 
 const AddTask = () => {
   const dispatch = useDispatch();
@@ -141,13 +142,13 @@ const AddTask = () => {
           <DrawerContent className="mx-auto max-w-2xl justify-center flex items-center ">
             <div className="mx-auto w-full max-w-lg">
               <DrawerHeader className="text-center flex justify-center flex-col items-center">
-                <DrawerTitle className="text-xl font-semibold ">
-                  Create New Task
-                </DrawerTitle>
-                <DrawerDescription className="text-sm text-slate-500">
-                  Once created, you can modify, delete, or undo the task at any
-                  time.
-                </DrawerDescription>
+                {/* <DrawerTitle className="text-xl font-semibold ">
+                    Create New Task
+                  </DrawerTitle>
+                  <DrawerDescription className="text-sm text-slate-500">
+                    Once created, you can modify, delete, or undo the task at any
+                    time.
+                  </DrawerDescription> */}
               </DrawerHeader>
 
               <div className=" pb-0">
@@ -156,7 +157,7 @@ const AddTask = () => {
                   autoFocus
                   onChange={(e) => setNewTask(e.target.value)}
                   placeholder="Create New Task"
-                  className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
+                  className="w-full rounded-2xl bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
                 />
                 {/* Category Selection */}
                 <div className="category">
@@ -183,8 +184,21 @@ const AddTask = () => {
                         setShowCalendar(false);
                       }}
                       placeholder="Add new category"
+                      className="rounded-2xl"
                     />
-                    <Button onClick={handleAddCategory}>Add</Button>
+                    <Button
+                      variant="outline"
+                      className="border border-slate-400 flex justify-between items-center  transition-all ease-in-out"
+                      onClick={() => {
+                        setShowCalendar((prev) => !prev);
+                        setShowTimeSlots(false);
+                        setShowCategory(false);
+                      }}
+                    >
+                      {selectedDate ? format(selectedDate, "PPP") : ""}
+                      <CalendarIcon className="w-5 h-5" />
+                    </Button>
+                    {/* <Button onClick={handleAddCategory}>Add</Button> */}
                   </div>
                   {showCategory && (
                     <div className="mt-3">
@@ -223,7 +237,7 @@ const AddTask = () => {
 
               {/* Calendar */}
               <div className="mt-3 flex justify-between items-center ">
-                <Button
+                {/* <Button
                   variant="outline"
                   className="border border-slate-400 flex justify-between items-center"
                   onClick={() => {
@@ -234,9 +248,10 @@ const AddTask = () => {
                 >
                   {selectedDate ? format(selectedDate, "PPP") : "Select Date"}
                   <CalendarIcon className="w-5 h-5" />
-                </Button>
+                </Button> */}
                 <Button
                   variant="outline"
+                  disabled
                   className="border border-slate-400 flex justify-between items-center"
                   onClick={() => {
                     setShowTimeSlots((prev) => !prev);
@@ -266,9 +281,12 @@ const AddTask = () => {
               )}
               {/* Time slots */}
               {showTimeSlots && (
-                <div className="mt-2">
+                <motion.div
+                  className="mt-2"
+                  
+                >
                   <DateTimePicker onSelect={handleSlotSelect} />
-                </div>
+                </motion.div>
               )}
 
               {selectedDate && selectedSlots.length === 2 && (
@@ -279,24 +297,36 @@ const AddTask = () => {
               )}
             </div>
 
-            <div className="mt-3">
+            <div className="mt-3 w-full">
               <DrawerFooter className="px-4 pt-2">
-                <div className="flex  gap-3 w-full">
+                <div className="block w-full">
+                  <Button
+                    // onClick={handleAddTask}
+                    className="w-full bg-slate-200 mb-3 border-0 rounded-full text-slate-800 hover:bg-slate-200"
+                    // disabled={newTask.trim() === ""}
+                    onClick={() => {
+                      setShowTimeSlots((prev) => !prev);
+                      setShowCalendar(false);
+                      setShowCategory(false);
+                    }}
+                  >
+                    Set Time
+                  </Button>
                   <Button
                     onClick={handleAddTask}
-                    className="w-full bg-slate-900 text-white hover:bg-slate-800"
+                    className="w-full bg-slate-900 text-white rounded-full hover:bg-slate-800"
                     disabled={newTask.trim() === ""}
                   >
                     Submit
                   </Button>
-                  <DrawerClose asChild>
+                  {/* <DrawerClose asChild>
                     <Button
                       variant="outline"
                       className="w-full border-slate-200 hover:bg-slate-100"
                     >
                       Cancel
                     </Button>
-                  </DrawerClose>
+                  </DrawerClose> */}
                 </div>
               </DrawerFooter>
             </div>

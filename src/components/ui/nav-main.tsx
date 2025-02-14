@@ -25,7 +25,9 @@ export function NavMain({
 
   // Get tasks from Redux store
   const todos = useSelector((state: RootState) => state.todos.todos);
-  const completedTodos = useSelector((state: RootState) => state.todos.completedTodos);
+  const completedTodos = useSelector(
+    (state: RootState) => state.todos.completedTodos
+  );
 
   // Compute task counts
   const pendingCount = todos.length;
@@ -45,7 +47,10 @@ export function NavMain({
         return (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild isActive={isActive}>
-              <a href={item.url} className="flex items-center justify-between w-full">
+              <a
+                href={item.url}
+                className="flex items-center justify-between w-full"
+              >
                 <div className="flex items-center gap-2">
                   <item.icon className="w-5 h-5" />
                   <span>{item.title}</span>

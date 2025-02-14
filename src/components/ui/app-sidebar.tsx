@@ -9,7 +9,7 @@ import {
   Inbox,
   MessageCircleQuestion,
   Search,
-  Settings2,
+  Settings2,  
   Sparkles,
   Square,
   Trash2,

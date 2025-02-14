@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const predefinedSlots = [
   "08:00 AM",
@@ -40,22 +41,48 @@ const DateTimePicker = ({
     onSelect(updatedSlots);
   };
 
+  const slotContainerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, staggerDirection: 1 }, // Appear one by one
+    },
+    exit: {
+      opacity: 0,
+      transition: { staggerChildren: 0.1, staggerDirection: -1 }, // Disappear one by one
+    },
+  };
+  
+  const slotItemVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: -10 },
+    show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 10 } },
+    exit: { opacity: 0, scale: 0.8, y: -10, transition: { duration: 0.2 } }, // Smooth fade out
+  };
   return (
-    <div className="grid grid-cols-4 gap-2 p-2">
-      {predefinedSlots.map((slot) => (
-        <button
-          key={slot}
-          className={`px-3 py-2 border rounded hover:bg-blue-500 hover:text-slate-200 ${
-            selectedSlots.includes(slot)
-              ? "bg-slate-900 text-white"
-              : "bg-gray-200"
-          }`}
-          onClick={() => toggleSlot(slot)}
-        >
-          {slot}
-        </button>
-      ))}
-    </div>
+    <AnimatePresence>
+      <motion.div
+        className="grid grid-cols-4 gap-2 p-2"
+        variants={slotContainerVariants}
+        initial="hidden"
+        animate="show"
+        exit="hidden"
+      >
+        {predefinedSlots.map((slot) => (
+          <motion.button
+            variants={slotItemVariants}
+            key={slot}
+            className={`px-3 py-2 border rounded hover:bg-blue-500 hover:text-slate-200 ${
+              selectedSlots.includes(slot)
+                ? "bg-slate-900 text-white"
+                : "bg-gray-200"
+            }`}
+            onClick={() => toggleSlot(slot)}
+          >
+            {slot}
+          </motion.button>
+        ))}
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
