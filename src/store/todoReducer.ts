@@ -60,7 +60,8 @@ const todoSlice = createSlice({
         selectedTimeSlots: action.payload.selectedTimeSlots,
         category: action.payload.category,
       };
-      state.todos.push(newTodo);
+      // state.todos.push(newTodo);
+      state.todos = [newTodo, ...state.todos]; // Add at the top instead of push
       savedTodosFromLocalstorage(state.todos, state.completedTodos);
     },
 
@@ -102,3 +103,5 @@ const todoSlice = createSlice({
 
 export const { addTodo, deleteTodo, toggleTodo } = todoSlice.actions;
 export default todoSlice.reducer;
+
+// User = module.export("UserSchema", userSchema)

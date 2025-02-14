@@ -54,8 +54,12 @@ const CompletedTask = () => {
 
                   {/* Category Badges - Wrapped in flex to align properly */}
                   <div className="flex gap-2 flex-wrap">
-                    {todo.category.map((cat:CategoryProps, index: number) => (
-                      <Badge key={index} className="flex px-2 py-1">
+                    {todo.category.map((cat: CategoryProps, index: number) => (
+                      <Badge
+                        key={index}
+                        className="flex px-2 py-1"
+                        variant="secondary"
+                      >
                         {cat.title}
                       </Badge>
                     ))}

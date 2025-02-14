@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
 import { deleteTodo, Todo, toggleTodo } from "../store/todoReducer";
 import { Badge } from "@/components/ui/badge";
+import { secondsInDay } from "date-fns/constants";
 
 export interface RootState {
   todos: Todo[];
@@ -51,7 +52,7 @@ const Task = () => {
                   />
 
                   {/* Task Title */}
-                  <div className="flex justify-start items-center gap-6">
+                  <div className="flex justify-start items-center gap-1">
                     <p
                       className={`${
                         todo.completed ? "line-through" : ""
@@ -63,7 +64,7 @@ const Task = () => {
                     {/* Category Badges - Wrapped in flex to align properly */}
                     <div className="flex gap-2 flex-wrap">
                       {todo.category.map((cat, index) => (
-                        <Badge key={index} className="flex px-2 py-1">
+                        <Badge key={index} className="flex px-2 py-1" variant="secondary" >
                           {cat.title}
                         </Badge>
                       ))}
