@@ -26,6 +26,11 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "../Task";
+import { Todo } from "@/store/todoReducer";
+
+// const todos = useSelector((state: RootState) => state.todos.todos);
 
 // This is sample data.
 export const data = {
@@ -47,18 +52,21 @@ export const data = {
     // },
     { name: "Private" },
   ],
-  navMain: [
+  navMain:  [
     {
       title: "Home",
       url: "/",
       icon: Home,
       isActive: true,
+      // count: todoCounter
     },
     {
       title: "Completed",
       url: "/completed",
       icon: CheckSquare,
+      // icon: "🏠︎",
       badge: "10",
+      // count: completedCounter
     },
     // {
     //   title: "Inbox",
@@ -256,6 +264,13 @@ export const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  // const todos = useSelector((state: RootState) => state.todos.todos);
+  // const todoCounter = todos.filter((todo) => !todo.completed);
+
+  // const completedCounter = todos.filter((todo) => todo.completed);
+  // console.log("completed all todos", completedCounter)
+  // console.log("all pending todos", todoCounter)
+
   return (
     <Sidebar className="bg-red-500 border-r-0" {...props}>
       <SidebarHeader>
