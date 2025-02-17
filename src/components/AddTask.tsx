@@ -56,10 +56,14 @@ const AddTask = () => {
             selectedSlots.length === 2
               ? `${selectedSlots[0]} - ${selectedSlots[1]}`
               : "Time is not provided",
-          category: selectedCategories.length > 0 ? selectedCategories[0] : "", // Store only one category
+          category:
+            selectedCategories.length > 0
+              ? selectedCategories.map((cat) => ({ title: cat })) // Convert to an array of CategoryProps
+              : [], // Store only one category
         })
       );
     }
+    console.log(newTask);
     resetSelections();
     setIsOpen(false);
   };
