@@ -19,7 +19,6 @@ import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
 import { Badge } from "./ui/badge";
 import EmojiPicker from "emoji-picker-react"; // Import emoji picker
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const AddTask = () => {
   const dispatch = useDispatch();
@@ -162,6 +161,20 @@ const AddTask = () => {
                 {/* Category Selection */}
                 <div className="category">
                   <div className="flex gap-2 mt-3">
+                    {/* Emoji Selection */}
+                    <div>
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setShowEmojiPicker(!showEmojiPicker);
+                          setShowCalendar(false);
+                          setShowCategory(false);
+                          setShowTimeSlots(false);
+                        }}
+                      >
+                        {selectEmoji || "Select Emoji"}
+                      </Button>
+                    </div>
                     <Input
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
@@ -176,8 +189,7 @@ const AddTask = () => {
                     <Button onClick={handleAddCategory}>Add</Button>
                   </div>
 
-                  {/* Emoji Selection */}
-                  <div>
+                  {/* <div>
                     <Button
                       onClick={() => {
                         setShowEmojiPicker(!showEmojiPicker);
@@ -188,35 +200,34 @@ const AddTask = () => {
                     >
                       {selectEmoji || "Select Emoji"}
                     </Button>
-                    {/* {showEmojiPicker && (
-                      <div className="mt-2 h-50">
-                        <EmojiPicker onEmojiClick={onEmojiClick} />
-                      </div>
-                    )} */}
-                  </div>
+                  </div> */}
 
                   <div className="mt-3">
                     <h2 className="text-lg font-medium">Select Categories</h2>
-                    {showCategory && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {categories.map(
-                          (category: CategoryProps, index: number) => (
-                            <Badge
-                              key={index}
-                              onClick={() =>
-                                handleCategoryClick(category.title)
-                              }
-                              className={`cursor-pointer px-3 py-1 hover:bg-blue-600 hover:text-slate-200 transition-all ${
-                                selectedCategories.includes(category.title)
-                                  ? "bg-slate-900 text-white"
-                                  : "bg-gray-200 text-gray-700"
-                              }`}
-                            >
-                              {category.emoji} {category.title}
-                            </Badge>
-                          )
-                        )}
-                      </div>
+                    {categories.length === 0 ? (
+                      <p className="mt-2 text-slate-700 flex justify-center">No categories are available</p>
+                    ) : (
+                      showCategory && (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {categories.map(
+                            (category: CategoryProps, index: number) => (
+                              <Badge
+                                key={index}
+                                onClick={() =>
+                                  handleCategoryClick(category.title)
+                                }
+                                className={`cursor-pointer px-3 py-1 hover:bg-blue-600 hover:text-slate-200 transition-all ${
+                                  selectedCategories.includes(category.title)
+                                    ? "bg-slate-900 text-white"
+                                    : "bg-gray-200 text-gray-700"
+                                }`}
+                              >
+                                {category.emoji} {category.title}
+                              </Badge>
+                            )
+                          )}
+                        </div>
+                      )
                     )}
                   </div>
                 </div>
