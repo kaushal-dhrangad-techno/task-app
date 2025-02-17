@@ -30,7 +30,7 @@ const AddTask = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [showTimeSlots, setShowTimeSlots] = useState<boolean>(false);
-  const [showCategory, setShowCategory] = useState<boolean>(true);
+  const [showCategory, setShowCategory] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectEmoji, setSelectEmoji] = useState<string>(""); // Store emoji for new category
@@ -189,23 +189,12 @@ const AddTask = () => {
                     <Button onClick={handleAddCategory}>Add</Button>
                   </div>
 
-                  {/* <div>
-                    <Button
-                      onClick={() => {
-                        setShowEmojiPicker(!showEmojiPicker);
-                        setShowCalendar(false);
-                        setShowCategory(false);
-                        setShowTimeSlots(false);
-                      }}
-                    >
-                      {selectEmoji || "Select Emoji"}
-                    </Button>
-                  </div> */}
-
                   <div className="mt-3">
                     <h2 className="text-lg font-medium">Select Categories</h2>
                     {categories.length === 0 ? (
-                      <p className="mt-2 text-slate-700 flex justify-center">No categories are available</p>
+                      <p className="mt-2 text-slate-700 flex justify-center">
+                        No categories are available
+                      </p>
                     ) : (
                       showCategory && (
                         <div className="flex flex-wrap gap-2 mt-2">
@@ -279,7 +268,9 @@ const AddTask = () => {
                   <div className="mt-2 flex justify-center items-center">
                     <EmojiPicker
                       height={300}
-                      searchDisabled
+                      // searchDisabled
+                      lazyLoadEmojis={false}
+                      preload
                       onEmojiClick={onEmojiClick}
                     />
                   </div>

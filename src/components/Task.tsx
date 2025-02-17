@@ -106,6 +106,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
 import { deleteTodo, Todo, toggleTodo } from "../store/todoReducer";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "motion/react";
 
 export interface RootState {
   todos: {
@@ -126,9 +127,28 @@ const Task = () => {
     dispatch(toggleTodo(id));
   };
 
+  // Animation
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.5 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <ScrollArea className="max-h-[80vh] mb-14 rounded-md">
-      <div className="md:pl-16 mt-3">
+      <motion.div
+        className="md:pl-16 mt-3"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <ul className="space-y-3">
           {todos.length === 0 ? (
             <div className="flex items-center justify-center text-xl font-medium ">
@@ -140,9 +160,10 @@ const Task = () => {
                 All the tasks
               </h1>
               {todos.map((todo: Todo) => (
-                <div
+                <motion.div
                   className="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-center bg-white px-4 py-2 rounded-md w-full"
                   key={todo.id}
+                  variants={itemVariants}
                 >
                   {/* Checkbox */}
                   <Checkbox
@@ -193,12 +214,12 @@ const Task = () => {
                       Delete
                     </Button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </>
           )}
         </ul>
-      </div>
+      </motion.div>
     </ScrollArea>
   );
 };
