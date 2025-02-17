@@ -12,6 +12,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<AddTask />} />
             <Route path="/completed" element={null} />
+            {/* <Route path="/test" element={<Test />} /> */}
           </Route>
           <Route path="*" element={<NoPage />} />
         </Routes>

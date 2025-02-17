@@ -26,8 +26,7 @@ const CompletedTask = () => {
       <ul className="space-y-3">
         {completedTodos.length === 0 ? (
           <div className="flex items-center justify-center text-slate-900  text-xl font-medium  ">
-            {/* All task are pending */}
-            Not available any completed task
+            No tasks available
           </div>
         ) : (
           <>
@@ -91,4 +90,4 @@ const CompletedTask = () => {
   );
 };
 
-export default CompletedTask
+export default CompletedTask;
