@@ -111,21 +111,26 @@ export function NavActions() {
         Edit Oct 08
       </div> */}
       {/* <div className="text-sm"> */}
-        <Button variant="ghost" size="icon" className="h-15 w-15 max-sm:hidden" asChild>
-          {/* <Star /> */}
-        </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-15 w-15 max-sm:hidden"
+        asChild
+      >
+        {/* <Star /> */}
+      </Button>
       {/* </div> */}
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger>
           {/* <div> */}
-            <Button
+          <Button
             asChild
-              variant="ghost"
-              size="icon"
-              className="max-sm:hidden h-7 w-7 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800"
-            >
-              <MoreHorizontal />
-            </Button>
+            variant="ghost"
+            size="icon"
+            className="max-sm:hidden h-7 w-7 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800"
+          >
+            <MoreHorizontal />
+          </Button>
           {/* </div> */}
         </PopoverTrigger>
         <PopoverContent
