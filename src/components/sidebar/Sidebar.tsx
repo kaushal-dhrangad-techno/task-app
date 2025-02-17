@@ -13,6 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Task from "../Task";
+// import CompletedTask from "../CompletedTask";
 import CompletedTask from "../CompletedTask";
 import { NavLink, useLocation } from "react-router-dom";
 

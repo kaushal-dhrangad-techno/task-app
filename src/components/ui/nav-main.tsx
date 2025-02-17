@@ -153,8 +153,8 @@ export function NavMain({
           <SidebarMenuItem key={category.title}>
             <SidebarMenuButton asChild>
               <button className="flex items-center gap-2 w-full px-3 py-2 text-left">
-                <span className="text-lg">{category.emoji}</span>
-                <span>{category.title}</span>
+                <span className="text-lg font-semibold">{category.emoji}</span>
+                <span className="font-semibold">{category.title}</span>
               </button>
             </SidebarMenuButton>
           </SidebarMenuItem>
