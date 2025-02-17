@@ -182,7 +182,7 @@ const Task = () => {
                       {todo.title}
                     </p>
 
-                    {/* Category Badges with Emojis */}
+                    {/* Category Badges with Emojis  */}
                     <div className="flex gap-2 flex-wrap">
                       {todo.category.map((cat, index) => (
                         <Badge
