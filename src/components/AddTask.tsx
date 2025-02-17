@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store"; // Import RootState type
+import { RootState } from "./Task"; // Import RootState type
 import { addTodo, addCategory, CategoryProps } from "@/store/todoReducer";
 import { Calendar } from "./ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
@@ -30,7 +30,7 @@ const AddTask = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [showTimeSlots, setShowTimeSlots] = useState<boolean>(false);
-  const [showCategory, setShowCategory] = useState<boolean>(false);
+  const [showCategory, setShowCategory] = useState<boolean>(true);
   const [newCategory, setNewCategory] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -56,7 +56,7 @@ const AddTask = () => {
             selectedSlots.length === 2
               ? `${selectedSlots[0]} - ${selectedSlots[1]}`
               : "Time is not provided",
-          category: selectedCategories.map((title) => ({ title })), // Multiple categories support
+          category: selectedCategories.length > 0 ? selectedCategories[0] : "", // Store only one category
         })
       );
     }
@@ -69,7 +69,10 @@ const AddTask = () => {
   };
 
   const handleAddCategory = () => {
-    if (newCategory.trim() && !categories.some((cat) => cat.title === newCategory)) {
+    if (
+      newCategory.trim() &&
+      !categories.some((cat) => cat.title === newCategory)
+    ) {
       dispatch(addCategory({ title: newCategory })); // Add category to Redux store
       setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
       setNewCategory("");
@@ -77,10 +80,8 @@ const AddTask = () => {
   };
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category) // Remove if already selected
-        : [...prev, category] // Add if not selected
+    setSelectedCategories(
+      (prev) => (prev.includes(category) ? [] : [category]) // Deselect if already selected, otherwise select
     );
   };
 
@@ -126,7 +127,8 @@ const AddTask = () => {
                   Create New Task
                 </DrawerTitle>
                 <DrawerDescription className="text-sm text-slate-500">
-                  Once created, you can modify, delete, or undo the task at any time.
+                  Once created, you can modify, delete, or undo the task at any
+                  time.
                 </DrawerDescription>
               </DrawerHeader>
 
@@ -145,6 +147,11 @@ const AddTask = () => {
                     <Input
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
+                      onClick={() => {
+                        setShowCategory((prev) => !prev);
+                        setShowTimeSlots(false);
+                        setShowCalendar(false);
+                      }}
                       placeholder="Add new category"
                     />
                     <Button onClick={handleAddCategory}>Add</Button>
@@ -152,32 +159,39 @@ const AddTask = () => {
 
                   <div className="mt-3">
                     <h2 className="text-lg font-medium">Select Categories</h2>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {categories.map((category, index) => (
-                        <Badge
-                          key={index}
-                          onClick={() => handleCategoryClick(category.title)}
-                          className={`cursor-pointer px-3 py-1 hover:bg-blue-600 hover:text-slate-200 transition-all ${
-                            selectedCategories.includes(category.title)
-                              ? "bg-slate-900 text-white"
-                              : "bg-gray-200 text-gray-700"
-                          }`}
-                        >
-                          {category.title}
-                        </Badge>
-                      ))}
-                    </div>
+                    {showCategory && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {categories.map(
+                          (category: CategoryProps, index: number) => (
+                            <Badge
+                              key={index}
+                              onClick={() =>
+                                handleCategoryClick(category.title)
+                              }
+                              className={`cursor-pointer px-3 py-1 hover:bg-blue-600 hover:text-slate-200 transition-all ${
+                                selectedCategories.includes(category.title)
+                                  ? "bg-slate-900 text-white"
+                                  : "bg-gray-200 text-gray-700"
+                              }`}
+                            >
+                              {category.title}
+                            </Badge>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Calendar & Time Slots */}
-              <div className="mt-3 flex justify-between items-center">
+              <div className="mt-3 flex mx-auto justify-between items-center">
                 <Button
                   variant="outline"
                   onClick={() => {
                     setShowCalendar((prev) => !prev);
                     setShowTimeSlots(false);
+                    setShowCategory(false);
                   }}
                 >
                   {selectedDate ? format(selectedDate, "PPP") : "Select Date"}
@@ -188,23 +202,44 @@ const AddTask = () => {
                   onClick={() => {
                     setShowTimeSlots((prev) => !prev);
                     setShowCalendar(false);
+                    setShowCategory(false);
                   }}
                 >
-                  {selectedSlots.length === 2 ? `${selectedSlots[0]} - ${selectedSlots[1]}` : "Set Time"}
+                  {selectedSlots.length === 2
+                    ? `${selectedSlots[0]} - ${selectedSlots[1]}`
+                    : "Set Time"}
                   <ClockIcon className="w-5 h-5" />
                 </Button>
               </div>
-
-              {showCalendar && <Calendar selected={selectedDate} onSelect={setSelectedDate} />}
+              <div className="flex justify-center items-center">
+                {showCalendar && (
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    className=""
+                    disabled={(date) =>
+                      isBefore(startOfDay(date), startOfDay(new Date()))
+                    }
+                  />
+                )}
+              </div>
               {showTimeSlots && <DateTimePicker onSelect={handleSlotSelect} />}
             </div>
 
             <DrawerFooter className="px-4 pt-2">
-              <Button onClick={handleAddTask} disabled={!newTask.trim()} className="w-full bg-slate-900 text-white hover:bg-slate-800">
+              <Button
+                onClick={handleAddTask}
+                disabled={!newTask.trim()}
+                className="w-full bg-slate-900 text-white hover:bg-slate-800"
+              >
                 Submit
               </Button>
               <DrawerClose asChild>
-                <Button variant="outline" className="w-full border-slate-200 hover:bg-slate-100">
+                <Button
+                  variant="outline"
+                  className="w-full border-slate-200 hover:bg-slate-100"
+                >
                   Cancel
                 </Button>
               </DrawerClose>
