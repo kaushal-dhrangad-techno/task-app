@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
@@ -19,6 +18,8 @@ import { format, isBefore, startOfDay } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
 import { Badge } from "./ui/badge";
+import EmojiPicker from "emoji-picker-react"; // Import emoji picker
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const AddTask = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const AddTask = () => {
   const [showCategory, setShowCategory] = useState<boolean>(true);
   const [newCategory, setNewCategory] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectEmoji, setSelectEmoji] = useState<string>(""); // Store emoji for new category
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 
   const resetSelections = () => {
     setNewTask("");
@@ -42,6 +45,7 @@ const AddTask = () => {
     setShowTimeSlots(false);
     setShowCategory(false);
     setSelectedCategories([]);
+    setSelectEmoji(""); // Reset emoji selection
   };
 
   const handleAddTask = () => {
@@ -58,12 +62,15 @@ const AddTask = () => {
               : "Time is not provided",
           category:
             selectedCategories.length > 0
-              ? selectedCategories.map((cat) => ({ title: cat })) // Convert to an array of CategoryProps
-              : [], // Store only one category
+              ? selectedCategories.map((cat) => ({
+                  title: cat,
+                  emoji: selectEmoji,
+                })) // Attach emoji to category
+              : [], // Store only one category with emoji
+          selectedEmoji: selectEmoji, // Store emoji for the task
         })
       );
     }
-    console.log(newTask);
     resetSelections();
     setIsOpen(false);
   };
@@ -77,9 +84,10 @@ const AddTask = () => {
       newCategory.trim() &&
       !categories.some((cat) => cat.title === newCategory)
     ) {
-      dispatch(addCategory({ title: newCategory })); // Add category to Redux store
+      dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
       setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
       setNewCategory("");
+      setSelectEmoji(""); // Reset emoji after category creation
     }
   };
 
@@ -87,6 +95,11 @@ const AddTask = () => {
     setSelectedCategories(
       (prev) => (prev.includes(category) ? [] : [category]) // Deselect if already selected, otherwise select
     );
+  };
+
+  const onEmojiClick = (emojiObject: any) => {
+    setSelectEmoji(emojiObject.emoji); // Set the selected emoji
+    setShowEmojiPicker(false); // Close emoji picker
   };
 
   useEffect(() => {
@@ -102,6 +115,7 @@ const AddTask = () => {
   }, []);
 
   return (
+    // <ScrollArea>
     <div className="fixed bottom-0 left-0 mt-6 right-0 bg-transparent shadow-lg flex justify-center">
       <div className="md:w-[35%] mx-auto py-2">
         <Drawer
@@ -155,10 +169,30 @@ const AddTask = () => {
                         setShowCategory((prev) => !prev);
                         setShowTimeSlots(false);
                         setShowCalendar(false);
+                        setShowEmojiPicker(false);
                       }}
                       placeholder="Add new category"
                     />
                     <Button onClick={handleAddCategory}>Add</Button>
+                  </div>
+
+                  {/* Emoji Selection */}
+                  <div>
+                    <Button
+                      onClick={() => {
+                        setShowEmojiPicker(!showEmojiPicker);
+                        setShowCalendar(false);
+                        setShowCategory(false);
+                        setShowTimeSlots(false);
+                      }}
+                    >
+                      {selectEmoji || "Select Emoji"}
+                    </Button>
+                    {/* {showEmojiPicker && (
+                      <div className="mt-2 h-50">
+                        <EmojiPicker onEmojiClick={onEmojiClick} />
+                      </div>
+                    )} */}
                   </div>
 
                   <div className="mt-3">
@@ -178,7 +212,7 @@ const AddTask = () => {
                                   : "bg-gray-200 text-gray-700"
                               }`}
                             >
-                              {category.title}
+                              {category.emoji} {category.title}
                             </Badge>
                           )
                         )}
@@ -207,6 +241,7 @@ const AddTask = () => {
                     setShowTimeSlots((prev) => !prev);
                     setShowCalendar(false);
                     setShowCategory(false);
+                    setShowEmojiPicker(false);
                   }}
                 >
                   {selectedSlots.length === 2
@@ -228,25 +263,30 @@ const AddTask = () => {
                   />
                 )}
               </div>
-              {showTimeSlots && <DateTimePicker onSelect={handleSlotSelect} />}
+              <div>
+                {showEmojiPicker && (
+                  <div className="mt-2 flex justify-center items-center">
+                    <EmojiPicker
+                      height={300}
+                      searchDisabled
+                      onEmojiClick={onEmojiClick}
+                    />
+                  </div>
+                )}
+                {showTimeSlots && (
+                  <DateTimePicker onSelect={handleSlotSelect} />
+                )}
+              </div>
             </div>
 
             <DrawerFooter className="px-4 pt-2">
               <Button
                 onClick={handleAddTask}
                 disabled={!newTask.trim()}
-                className="w-full bg-slate-900 text-white hover:bg-slate-800"
+                className="w-full"
               >
-                Submit
+                Add Task
               </Button>
-              <DrawerClose asChild>
-                <Button
-                  variant="outline"
-                  className="w-full border-slate-200 hover:bg-slate-100"
-                >
-                  Cancel
-                </Button>
-              </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
