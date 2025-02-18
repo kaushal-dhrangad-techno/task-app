@@ -116,7 +116,6 @@
 // export const { addCategory, addTodo, deleteTodo, toggleTodo } = todoSlice.actions;
 // export default todoSlice.reducer;
 
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CategoryProps {
@@ -128,17 +127,16 @@ export interface Todo {
   id: string;
   title: string;
   completed: boolean;
-  selectedDate?: string; // Store as string (ISO format)
-  selectedTimeSlots: string[]; // Ensure it's always an array
+  selectedDate?: string; 
+  selectedTimeSlots: string[]; 
   category: CategoryProps[];
-  selectedEmoji?: string; // Add selected emoji to Todo
+  selectedEmoji?: string; 
 }
 
-// Define the state type
 interface TodoState {
   todos: Todo[];
   completedTodos: Todo[];
-  categories: CategoryProps[]; // Categories with emoji
+  categories: CategoryProps[]; 
 }
 
 // Load tasks from local storage
@@ -147,8 +145,12 @@ const loadTodosFromLocalstorage = (): TodoState => {
   const savedCategories = localStorage.getItem("categories");
 
   return {
-    todos: savedTodos ? JSON.parse(savedTodos).filter((todo: Todo) => !todo.completed) : [],
-    completedTodos: savedTodos ? JSON.parse(savedTodos).filter((todo: Todo) => todo.completed) : [],
+    todos: savedTodos
+      ? JSON.parse(savedTodos).filter((todo: Todo) => !todo.completed)
+      : [],
+    completedTodos: savedTodos
+      ? JSON.parse(savedTodos).filter((todo: Todo) => todo.completed)
+      : [],
     categories: savedCategories ? JSON.parse(savedCategories) : [],
   };
 };
@@ -166,36 +168,38 @@ const todoSlice = createSlice({
   reducers: {
     // Add a new category independently
     addCategory: (state, action: PayloadAction<CategoryProps>) => {
-      const exists = state.categories.some((c) => c.title === action.payload.title);
+      const exists = state.categories.some(
+        (c) => c.title === action.payload.title
+      );
       if (!exists) {
         state.categories.push(action.payload);
-        localStorage.setItem("categories", JSON.stringify(state.categories)); // Save to localStorage
+        localStorage.setItem("categories", JSON.stringify(state.categories));
       }
     },
-
+    // Add tasks
     addTodo: (
       state,
       action: PayloadAction<{
         id: string;
         title: string;
         completed: boolean;
-        selectedTimeSlots: string[]; // Store as an array
-        selectedDate?: string; // Store date as a string
+        selectedTimeSlots: string[];
+        selectedDate?: string;
         category: CategoryProps[];
-        selectedEmoji?: string; // Store selected emoji for task
+        selectedEmoji?: string;
       }>
     ) => {
       const newTodo: Todo = {
         id: action.payload.id,
         title: action.payload.title,
         completed: action.payload.completed,
-        selectedDate: action.payload.selectedDate, // Store as string
-        selectedTimeSlots: action.payload.selectedTimeSlots, // Keep array
+        selectedDate: action.payload.selectedDate,
+        selectedTimeSlots: action.payload.selectedTimeSlots,
         category: action.payload.category,
-        selectedEmoji: action.payload.selectedEmoji, // Store emoji for task
+        selectedEmoji: action.payload.selectedEmoji,
       };
 
-      state.todos.push(newTodo);
+      state.todos.unshift(newTodo); // Use unshift for latest task added on the top of other task.
 
       // Ensure categories are added only if they don't exist
       action.payload.category.forEach((cat) => {
@@ -208,24 +212,35 @@ const todoSlice = createSlice({
       localStorage.setItem("categories", JSON.stringify(state.categories));
     },
 
+    // Delete Tasks
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
-      state.completedTodos = state.completedTodos.filter((todo) => todo.id !== action.payload.id);
+      state.completedTodos = state.completedTodos.filter(
+        (todo) => todo.id !== action.payload.id
+      );
 
       savedTodosFromLocalstorage(state.todos, state.completedTodos);
       localStorage.setItem("categories", JSON.stringify(state.categories));
     },
 
+    // Toggle Task completed or not
     toggleTodo: (state, action: PayloadAction<string>) => {
-      const todoIndex = state.todos.findIndex((todo) => todo.id === action.payload);
-      const completedIndex = state.completedTodos.findIndex((todo) => todo.id === action.payload);
+      const todoIndex = state.todos.findIndex(
+        (todo) => todo.id === action.payload
+      );
+      const completedIndex = state.completedTodos.findIndex(
+        (todo) => todo.id === action.payload
+      );
 
       if (todoIndex !== -1) {
         const updatedTodo = { ...state.todos[todoIndex], completed: true };
         state.completedTodos.push(updatedTodo);
         state.todos.splice(todoIndex, 1);
       } else if (completedIndex !== -1) {
-        const updatedTodo = { ...state.completedTodos[completedIndex], completed: false };
+        const updatedTodo = {
+          ...state.completedTodos[completedIndex],
+          completed: false,
+        };
         state.todos.push(updatedTodo);
         state.completedTodos.splice(completedIndex, 1);
       }
@@ -235,5 +250,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addCategory, addTodo, deleteTodo, toggleTodo } = todoSlice.actions;
+export const { addCategory, addTodo, deleteTodo, toggleTodo } =
+  todoSlice.actions;
 export default todoSlice.reducer;

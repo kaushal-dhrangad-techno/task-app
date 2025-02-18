@@ -26,7 +26,6 @@ import { motion } from "motion/react";
 const AddTask = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.todos.categories);
-  // const { toast } = useToast();
 
   const [newTask, setNewTask] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,7 +47,7 @@ const AddTask = () => {
     setShowTimeSlots(false);
     setShowCategory(false);
     setSelectedCategories([]);
-    setSelectEmoji(""); // Reset emoji selection
+    setSelectEmoji("");
   };
 
   const handleAddTask = () => {
@@ -98,10 +97,10 @@ const AddTask = () => {
       return;
     }
 
-    dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
-    setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
+    dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); 
+    setSelectedCategories([...selectedCategories, newCategory]); 
     setNewCategory("");
-    setSelectEmoji(""); // Reset emoji after category creation
+    setSelectEmoji(""); 
   };
 
   const handleCategoryClick = (category: string) => {
@@ -111,8 +110,8 @@ const AddTask = () => {
   };
 
   const onEmojiClick = (emojiObject: any) => {
-    setSelectEmoji(emojiObject.emoji); // Set the selected emoji
-    setShowEmojiPicker(false); // Close emoji picker
+    setSelectEmoji(emojiObject.emoji); 
+    setShowEmojiPicker(false); 
   };
 
   useEffect(() => {
