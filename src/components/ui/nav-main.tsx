@@ -84,6 +84,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../Task";
 import { ScrollArea } from "./scroll-area";
+import { motion } from "motion/react";
 
 export function NavMain({
   items,
@@ -116,6 +117,20 @@ export function NavMain({
     return item;
   });
 
+  // Animation
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.3 }, //0.5
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <SidebarMenu>
       {/* Default Menu Items */}
@@ -124,20 +139,25 @@ export function NavMain({
         return (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild isActive={isActive}>
-              <a
+              <motion.a
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
                 href={item.url}
                 className="flex items-center justify-between w-full"
               >
-                <div className="flex items-center gap-2">
+                <motion.div className="flex items-center gap-2">
                   <item.icon className="w-5 h-5" />
-                  <span>{item.title}</span>
-                </div>
+                  <motion.span variants={itemVariants}>
+                    {item.title}
+                  </motion.span>
+                </motion.div>
                 {item.count !== undefined && (
                   <span className="bg-slate-200 text-slate-600 text-xs font-semibold px-2 py-1 rounded-full">
                     {item.count}
                   </span>
                 )}
-              </a>
+              </motion.a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         );
@@ -149,18 +169,26 @@ export function NavMain({
         Categories
       </h3>
       {/* <ScrollArea className="w-full"> */}
-      <div className="">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className=""
+      >
         {categories.map((category) => (
           <SidebarMenuItem key={category.title}>
             <SidebarMenuButton asChild>
-              <button className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left">
+              <motion.button
+                variants={itemVariants}
+                className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left"
+              >
                 <span className="text-lg">{category.emoji}</span>
                 <span>{category.title}</span>
-              </button>
+              </motion.button>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
-      </div>
+      </motion.div>
     </SidebarMenu>
   );
 }

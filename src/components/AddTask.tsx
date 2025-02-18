@@ -126,6 +126,7 @@ const AddTask = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // Animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

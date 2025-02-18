@@ -127,16 +127,16 @@ export interface Todo {
   id: string;
   title: string;
   completed: boolean;
-  selectedDate?: string; 
-  selectedTimeSlots: string[]; 
+  selectedDate?: string;
+  selectedTimeSlots: string[];
   category: CategoryProps[];
-  selectedEmoji?: string; 
+  selectedEmoji?: string;
 }
 
 interface TodoState {
   todos: Todo[];
   completedTodos: Todo[];
-  categories: CategoryProps[]; 
+  categories: CategoryProps[];
 }
 
 // Load tasks from local storage
@@ -212,6 +212,13 @@ const todoSlice = createSlice({
       localStorage.setItem("categories", JSON.stringify(state.categories));
     },
 
+    markPendingRemoval: (state, action: PayloadAction<{ id: string }>) => {
+      const todo = state.todos.find((t) => t.id === action.payload.id);
+      if (todo) {
+        todo.pendingRemoval = true;
+      }
+    },
+
     // Delete Tasks
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
@@ -250,6 +257,11 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addCategory, addTodo, deleteTodo, toggleTodo } =
-  todoSlice.actions;
+export const {
+  addCategory,
+  addTodo,
+  markPendingRemoval,
+  deleteTodo,
+  toggleTodo,
+} = todoSlice.actions;
 export default todoSlice.reducer;
