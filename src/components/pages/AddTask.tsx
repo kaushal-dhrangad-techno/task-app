@@ -13,14 +13,14 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./Task";
 import { addTodo, addCategory, CategoryProps } from "@/store/todoReducer";
-import { Calendar } from "./ui/calendar";
+import { Calendar } from "../ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 // import EmojiPicker from "emoji-picker-react";
 import EmojiPicker from "emoji-picker-react";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
 import { motion } from "motion/react";
 
 const AddTask = () => {
@@ -97,10 +97,10 @@ const AddTask = () => {
       return;
     }
 
-    dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); 
-    setSelectedCategories([...selectedCategories, newCategory]); 
+    dispatch(addCategory({ title: newCategory, emoji: selectEmoji }));
+    setSelectedCategories([...selectedCategories, newCategory]);
     setNewCategory("");
-    setSelectEmoji(""); 
+    setSelectEmoji("");
   };
 
   const handleCategoryClick = (category: string) => {
@@ -110,8 +110,8 @@ const AddTask = () => {
   };
 
   const onEmojiClick = (emojiObject: any) => {
-    setSelectEmoji(emojiObject.emoji); 
-    setShowEmojiPicker(false); 
+    setSelectEmoji(emojiObject.emoji);
+    setShowEmojiPicker(false);
   };
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import AddTask from "./components/AddTask";
-import Layout from "./components/layout/Layout";
-import NoPage from "./components/NoPage";
-import Test from "./components/TestComponent";
+import AddTask from "./components/pages/AddTask";
+import Layout from "./components/pages/Layout";
+import NoPage from "./components/pages/NoPage";
+import Test from "./components/pages/TestComponent";
 
 function App() {
   return (
@@ -22,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

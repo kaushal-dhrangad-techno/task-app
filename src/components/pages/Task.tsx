@@ -136,14 +136,14 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   CategoryProps,
   deleteTodo,
   markPendingRemoval,
   Todo,
   toggleTodo,
-} from "../store/todoReducer";
+} from "../../store/todoReducer";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
@@ -166,9 +166,9 @@ const Task = () => {
     // Measure text widths after render
     Object.entries(textRefs.current).forEach(([id, element]) => {
       if (element) {
-        setTextWidths(prev => ({
+        setTextWidths((prev) => ({
           ...prev,
-          [id]: element.offsetWidth
+          [id]: element.offsetWidth,
         }));
       }
     });
@@ -267,7 +267,7 @@ const Task = () => {
                   <div className="flex justify-start items-center gap-1">
                     <div className="relative">
                       <p
-                        ref={el => {
+                        ref={(el) => {
                           if (el) textRefs.current[todo.id] = el;
                         }}
                         className="flex justify-start items-center text-md md:text-lg text-clip pr-2"
@@ -275,11 +275,11 @@ const Task = () => {
                         {todo.title}
                       </p>
                       {(todo.completed || animatingTodo === todo.id) && (
-                        <div 
+                        <div
                           className="absolute inset-0 flex items-center pointer-events-none"
                           style={{ width: `${textWidths[todo.id]}px` }}
                         >
-                          <motion.svg 
+                          <motion.svg
                             className="w-full h-8"
                             viewBox="150 140 90 100"
                             preserveAspectRatio="none"
@@ -287,7 +287,7 @@ const Task = () => {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.3, delay: 0.2 }}
                           >
-                            <motion.path 
+                            <motion.path
                               d="M153.81166076660156,186.54708862304688C161.58445739746094,177.27952575683594,172.64574686686197,155.4559122721354,177.1300506591797,158.74440002441406C181.6143544514974,162.03288777669272,163.0792236328125,191.9282480875651,167.2645721435547,196.4125518798828C171.44992065429688,200.89685567220053,184.6038818359375,169.50672912597656,189.68609619140625,172.1973114013672C194.768310546875,174.8878936767578,179.52167765299478,201.19581095377603,182.51121520996094,204.4842987060547C185.5007527669271,207.77278645833334,193.27354431152344,179.37218729654947,198.6547088623047,182.06277465820312C204.03587341308594,184.75336201985678,195.36622111002603,207.47384643554688,198.6547088623047,212.55606079101562C201.94319661458334,217.63827514648438,203.13900756835938,196.71151224772134,208.52017211914062,197.30941772460938C213.90133666992188,197.9073232014974,205.82958984375,210.46337890625,214.79820251464844,214.3497772216797C223.76681518554688,218.23617553710938,228.5500742594401,210.76233418782553,235.42601013183594,208.96861267089844"
                               fill="none"
                               strokeWidth="6"

@@ -82,7 +82,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../Task";
+import { RootState } from "../pages/Task";
 import { ScrollArea } from "./scroll-area";
 import { motion } from "motion/react";
 
@@ -183,7 +183,7 @@ export function NavMain({
                 className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left"
               >
                 <span className="text-lg">{category.emoji}</span>
-                <span>{category.title}</span>
+                <span>{category.title} </span>
               </motion.button>
             </SidebarMenuButton>
           </SidebarMenuItem>

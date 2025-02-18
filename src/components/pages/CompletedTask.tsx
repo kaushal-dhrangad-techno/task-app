@@ -119,10 +119,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "./Task";
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import { CategoryProps, deleteTodo, toggleTodo } from "@/store/todoReducer";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import { motion } from "framer-motion";
 
 const CompletedTask = () => {
