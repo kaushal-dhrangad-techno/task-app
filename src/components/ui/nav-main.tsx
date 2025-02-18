@@ -149,19 +149,18 @@ export function NavMain({
         Categories
       </h3>
       {/* <ScrollArea className="w-full"> */}
-      {/* <div className="max-h-screen overflow-auto"> */}
-      {categories.map((category) => (
-        <SidebarMenuItem key={category.title}>
-          <SidebarMenuButton asChild>
-            <button className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left">
-              <span className="text-lg">{category.emoji}</span>
-              <span>{category.title}</span>
-            </button>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
-
-      {/* </div> */}
+      <div className="">
+        {categories.map((category) => (
+          <SidebarMenuItem key={category.title}>
+            <SidebarMenuButton asChild>
+              <button className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left">
+                <span className="text-lg">{category.emoji}</span>
+                <span>{category.title}</span>
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
+      </div>
     </SidebarMenu>
   );
 }

@@ -11,19 +11,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./Task"; // Import RootState type
+import { RootState } from "./Task";
 import { addTodo, addCategory, CategoryProps } from "@/store/todoReducer";
 import { Calendar } from "./ui/calendar";
 import { format, isBefore, startOfDay } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import DateTimePicker from "./DateTimePicker";
 import { Badge } from "./ui/badge";
-import EmojiPicker from "emoji-picker-react"; // Import emoji picker
+// import EmojiPicker from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
 import { ScrollArea } from "./ui/scroll-area";
+import { motion } from "motion/react";
 
 const AddTask = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.todos.categories);
+  // const { toast } = useToast();
 
   const [newTask, setNewTask] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -32,10 +35,10 @@ const AddTask = () => {
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [showTimeSlots, setShowTimeSlots] = useState<boolean>(false);
   const [showCategory, setShowCategory] = useState<boolean>(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectEmoji, setSelectEmoji] = useState<string>(""); // Store emoji for new category
-  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+  const [selectEmoji, setSelectEmoji] = useState<string>("");
 
   const resetSelections = () => {
     setNewTask("");
@@ -80,16 +83,6 @@ const AddTask = () => {
   };
 
   const handleAddCategory = () => {
-    // if (
-    //   newCategory.trim() &&
-    //   !categories.some((cat) => cat.title === newCategory)
-    // ) {
-    //   dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
-    //   setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
-    //   setNewCategory("");
-    //   setSelectEmoji(""); // Reset emoji after category creation
-    // }
-
     if (!newCategory.trim()) {
       alert("Category name cannot be empty!");
       return;
@@ -134,9 +127,27 @@ const AddTask = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.5 }, //0.5
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     // <ScrollArea>
-    <div className="fixed bottom-0 left-0 mt-6 right-0 bg-transparent shadow-lg flex justify-center">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="fixed bottom-0 left-0 mt-6 right-0 bg-transparent shadow-lg flex justify-center"
+    >
       <div className="md:w-[35%] mx-auto py-2">
         <Drawer
           open={isOpen}
@@ -170,32 +181,43 @@ const AddTask = () => {
                 </DrawerDescription>
               </DrawerHeader>
 
-              <div className="pb-0">
-                <Input
-                  value={newTask}
-                  autoFocus
-                  onChange={(e) => setNewTask(e.target.value)}
-                  placeholder="Create New Task"
-                  className="w-full bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
-                />
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="pb-0"
+              >
+                <motion.div
+                  variants={itemVariants}
+                  className="flex justify-center items-center gap-2 "
+                >
+                  <Input
+                    value={newTask}
+                    autoFocus
+                    onChange={(e) => setNewTask(e.target.value)}
+                    placeholder="Create New Task"
+                    className="w-full mr-1 bg-white text-black placeholder:text-slate-500 border-slate-700 focus-visible:ring-slate-400"
+                  />
+                  <Button
+                    // variant="outline"
+                    variant={showCalendar ? "default" : "secondary"}
+                    onClick={() => {
+                      setShowCalendar((prev) => !prev);
+                      setShowTimeSlots(false);
+                      setShowCategory(false);
+                      setShowEmojiPicker(false);
+                    }}
+                    className="px-5 py-4"
+                  >
+                    {selectedDate ? format(selectedDate, "PPP") : ""}
+                    <CalendarIcon className="w-5 h-5" />
+                  </Button>
+                </motion.div>
 
                 {/* Category Selection */}
-                <div className="category">
+                <motion.div variants={itemVariants} className="category">
                   <div className="flex gap-2 mt-3">
                     {/* Emoji Selection */}
-                    <div>
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setShowEmojiPicker(!showEmojiPicker);
-                          setShowCalendar(false);
-                          setShowCategory(false);
-                          setShowTimeSlots(false);
-                        }}
-                      >
-                        {selectEmoji || "Select Emoji"}
-                      </Button>
-                    </div>
                     <Input
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
@@ -205,22 +227,58 @@ const AddTask = () => {
                         setShowCalendar(false);
                         setShowEmojiPicker(false);
                       }}
-                      placeholder="Add new category"
+                      placeholder="Add new category with emoji"
                     />
+                    <Button
+                      // variant="secondary"
+                      variant={showEmojiPicker ? "default" : "secondary"}
+                      onClick={() => {
+                        setShowEmojiPicker(!showEmojiPicker);
+                        setShowCalendar(false);
+                        setShowCategory(false);
+                        setShowTimeSlots(false);
+                      }}
+                    >
+                      {selectEmoji || (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          className="lucide lucide-smile"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                          <line x1="9" x2="9.01" y1="9" y2="9" />
+                          <line x1="15" x2="15.01" y1="9" y2="9" />
+                        </svg>
+                      )}
+                    </Button>
                     <Button onClick={handleAddCategory}>Add</Button>
                   </div>
 
                   <div className="mt-3">
-                    <h2 className="text-lg font-medium">Select Categories</h2>
                     <ScrollArea className="w-full">
                       <div className="max-h-[30vh] overflow-auto">
+                        {/* <h2 className="text-lg font-medium">Select Categories</h2> */}
                         {categories.length === 0 ? (
                           <p className="mt-2 text-slate-700 flex justify-center">
                             No categories are available
                           </p>
                         ) : (
                           showCategory && (
-                            <div className="flex flex-col gap-2 mt-2">
+                            <motion.div
+                              variants={itemVariants}
+                              className="flex flex-col gap-2 mt-2"
+                            >
+                              <h2 className="text-lg font-medium">
+                                Select Categories
+                              </h2>
                               {categories.map(
                                 (category: CategoryProps, index: number) => (
                                   <Badge
@@ -240,67 +298,51 @@ const AddTask = () => {
                                   </Badge>
                                 )
                               )}
-                            </div>
+                            </motion.div>
                           )
                         )}
                       </div>
                     </ScrollArea>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Calendar & Time Slots */}
-              <div className="mt-3 flex mx-auto justify-between items-center">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowCalendar((prev) => !prev);
-                    setShowTimeSlots(false);
-                    setShowCategory(false);
-                  }}
-                >
-                  {selectedDate ? format(selectedDate, "PPP") : "Select Date"}
-                  <CalendarIcon className="w-5 h-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowTimeSlots((prev) => !prev);
-                    setShowCalendar(false);
-                    setShowCategory(false);
-                    setShowEmojiPicker(false);
-                  }}
-                >
-                  {selectedSlots.length === 2
-                    ? `${selectedSlots[0]} - ${selectedSlots[1]}`
-                    : "Set Time"}
-                  <ClockIcon className="w-5 h-5" />
-                </Button>
-              </div>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center w-full">
                 {showCalendar && (
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={setSelectedDate}
-                    className=""
-                    disabled={(date) =>
-                      isBefore(startOfDay(date), startOfDay(new Date()))
-                    }
-                  />
+                  <motion.div variants={itemVariants} className="">
+                    {/* <h2 className="text-lg flex justify-start font-medium">
+                      Select Date
+                    </h2> */}
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      className=""
+                      disabled={(date) =>
+                        isBefore(startOfDay(date), startOfDay(new Date()))
+                      }
+                    />
+                  </motion.div>
                 )}
               </div>
               <div>
                 {showEmojiPicker && (
-                  <div className="mt-2 flex justify-center items-center">
+                  <motion.div
+                    variants={itemVariants}
+                    className="mt-2 flex justify-center items-center"
+                  >
                     <EmojiPicker
                       height={300}
+                      className="text-sm"
                       // searchDisabled
-                      lazyLoadEmojis={false}
+                      lazyLoadEmojis={true}
+                      previewConfig={{ showPreview: false }}
+                      size={5}
                       preload
                       onEmojiClick={onEmojiClick}
                     />
-                  </div>
+                  </motion.div>
                 )}
                 {showTimeSlots && (
                   <DateTimePicker onSelect={handleSlotSelect} />
@@ -308,7 +350,21 @@ const AddTask = () => {
               </div>
             </div>
 
-            <DrawerFooter className="px-4 pt-2">
+            <DrawerFooter className="px-4 pt-2 mt-2 w-[80%] mx-auto">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowTimeSlots((prev) => !prev);
+                  setShowCalendar(false);
+                  setShowCategory(false);
+                  setShowEmojiPicker(false);
+                }}
+              >
+                {selectedSlots.length === 2
+                  ? `${selectedSlots[0]} - ${selectedSlots[1]}`
+                  : "Set Time"}
+                <ClockIcon className="w-5 h-5" />
+              </Button>
               <Button
                 onClick={handleAddTask}
                 disabled={!newTask.trim()}
@@ -320,7 +376,7 @@ const AddTask = () => {
           </DrawerContent>
         </Drawer>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
