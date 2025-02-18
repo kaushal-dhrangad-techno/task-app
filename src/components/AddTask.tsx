@@ -80,15 +80,35 @@ const AddTask = () => {
   };
 
   const handleAddCategory = () => {
-    if (
-      newCategory.trim() &&
-      !categories.some((cat) => cat.title === newCategory)
-    ) {
-      dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
-      setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
-      setNewCategory("");
-      setSelectEmoji(""); // Reset emoji after category creation
+    // if (
+    //   newCategory.trim() &&
+    //   !categories.some((cat) => cat.title === newCategory)
+    // ) {
+    //   dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
+    //   setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
+    //   setNewCategory("");
+    //   setSelectEmoji(""); // Reset emoji after category creation
+    // }
+
+    if (!newCategory.trim()) {
+      alert("Category name cannot be empty!");
+      return;
     }
+
+    if (!selectEmoji.trim()) {
+      alert("Please select an emoji for the category! 😊");
+      return;
+    }
+
+    if (categories.some((cat) => cat.title === newCategory)) {
+      alert("This category already exists!");
+      return;
+    }
+
+    dispatch(addCategory({ title: newCategory, emoji: selectEmoji })); // Add category with emoji to Redux store
+    setSelectedCategories([...selectedCategories, newCategory]); // Select the new category
+    setNewCategory("");
+    setSelectEmoji(""); // Reset emoji after category creation
   };
 
   const handleCategoryClick = (category: string) => {

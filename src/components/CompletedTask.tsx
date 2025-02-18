@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { CategoryProps, deleteTodo, toggleTodo } from "@/store/todoReducer";
 import { Badge } from "./ui/badge";
+import { motion } from "motion/react";
 
 const CompletedTask = () => {
   const todos = useSelector((state: RootState) => state.todos.completedTodos);
@@ -21,8 +22,26 @@ const CompletedTask = () => {
     console.log("After dispatch ", todos);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.5 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <div className="md:pl-16 mt-5">
+    <motion.div
+      className="md:pl-16 mt-5"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <ul className="space-y-3">
         {completedTodos.length === 0 ? (
           <div className="flex items-center justify-center text-slate-900  text-xl font-medium  ">
@@ -34,9 +53,10 @@ const CompletedTask = () => {
               Completed Task
             </h1>
             {completedTodos.map((todo: any) => (
-              <div
+              <motion.div
                 className="grid grid-cols-[auto_1fr_auto] gap-3 items-center bg-white px-4 py-2 rounded-md w-full"
                 key={todo.id}
+                variants={itemVariants}
               >
                 <Checkbox
                   checked={todo.completed}
@@ -81,12 +101,12 @@ const CompletedTask = () => {
                     Delete
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </>
         )}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

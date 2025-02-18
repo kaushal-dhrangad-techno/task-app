@@ -71,7 +71,6 @@
 //   );
 // }
 
-
 // *******************************************************************************************************
 "use client";
 
@@ -84,6 +83,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../Task";
+import { ScrollArea } from "./scroll-area";
 
 export function NavMain({
   items,
@@ -144,22 +144,24 @@ export function NavMain({
       })}
 
       {/* Categories Section */}
-      <div className="mt-4 border-t border-gray-300 pt-2">
-        <h3 className="text-xs uppercase font-semibold text-gray-500 px-3">
-          Categories
-        </h3>
+      {/* <div className="mt-4 border-t border-gray-300 pt-2"> */}
+      <h3 className="text-xs mt-5 uppercase font-semibold text-gray-500 px-3">
+        Categories
+      </h3>
+      {/* <ScrollArea className="w-full"> */}
+      {/* <div className="max-h-screen overflow-auto"> */}
+      {categories.map((category) => (
+        <SidebarMenuItem key={category.title}>
+          <SidebarMenuButton asChild>
+            <button className="flex justify-start   font-medium items-center gap-2 my-1 w-full px-3 py-2 text-left">
+              <span className="text-lg">{category.emoji}</span>
+              <span>{category.title}</span>
+            </button>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
 
-        {categories.map((category) => (
-          <SidebarMenuItem key={category.title}>
-            <SidebarMenuButton asChild>
-              <button className="flex items-center gap-2 w-full px-3 py-2 text-left">
-                <span className="text-lg">{category.emoji}</span>
-                <span>{category.title}</span>
-              </button>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </div>
+      {/* </div> */}
     </SidebarMenu>
   );
 }
