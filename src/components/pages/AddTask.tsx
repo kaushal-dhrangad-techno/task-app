@@ -146,9 +146,9 @@ const AddTask = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="fixed bottom-0 left-0 mt-6 right-0 bg-transparent shadow-lg flex justify-center"
+      className="fixed  bottom-0 left-0 mt-6 right-0 bg-transparent shadow-lg flex justify-center"
     >
-      <div className="md:w-[35%] mx-auto py-2">
+      <div className="md:w-[35%] mx-auto py-2 ">
         <Drawer
           open={isOpen}
           onOpenChange={(open) => {
@@ -157,8 +157,8 @@ const AddTask = () => {
           }}
         >
           <DrawerTrigger asChild>
-            <div className="relative cursor-pointer">
-              <div className="flex items-center text-sm rounded-md w-full px-4 py-2 bg-slate-900 text-white md:rounded-full border border-slate-700 hover:border-slate-600 transition-colors">
+            <div className="relative cursor-pointer ">
+              <div className="flex items-center  text-sm rounded-md w-full px-4 py-2 bg-slate-900 text-white md:rounded-full border border-slate-700 hover:border-slate-600 transition-colors">
                 <div className="flex-1 text-slate-400 md:text-[16px]">
                   Create New Task
                 </div>
@@ -169,8 +169,8 @@ const AddTask = () => {
             </div>
           </DrawerTrigger>
 
-          <DrawerContent className="mx-auto max-w-2xl justify-center flex items-center">
-            <div className="mx-auto w-full max-w-lg">
+          <DrawerContent className="mx-auto bg-red-500 max-w-2xl justify-center flex items-center">
+            <div className="mx-auto w-[90%] md:w-full max-w-lg">
               <DrawerHeader className="text-center flex justify-center flex-col items-center">
                 <DrawerTitle className="text-xl font-semibold ">
                   Create New Task
@@ -350,7 +350,8 @@ const AddTask = () => {
               </div>
             </div>
 
-            <DrawerFooter className="px-4 pt-2 mt-2 w-[80%] mx-auto">
+            {/* px-4 pt-2 mt-2 w-[80%] mx-auto */}
+            <DrawerFooter className="px-2 pt-2 mt-2 w-[90%] max-w-lg mx-auto">
               <Button
                 variant="outline"
                 onClick={() => {
