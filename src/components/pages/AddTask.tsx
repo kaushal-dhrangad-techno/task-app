@@ -169,7 +169,7 @@ const AddTask = () => {
             </div>
           </DrawerTrigger>
 
-          <DrawerContent className="mx-auto bg-red-500 max-w-2xl justify-center flex items-center">
+          <DrawerContent className="mx-auto  max-w-2xl justify-center flex items-center">
             <div className="mx-auto w-[90%] md:w-full max-w-lg">
               <DrawerHeader className="text-center flex justify-center flex-col items-center">
                 <DrawerTitle className="text-xl font-semibold ">

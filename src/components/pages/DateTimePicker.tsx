@@ -2,6 +2,9 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const predefinedSlots = [
+  "05:00 AM",
+  "06:00 AM",
+  "07:00 AM",
   "08:00 AM",
   "09:00 AM",
   "10:00 AM",
@@ -13,6 +16,9 @@ const predefinedSlots = [
   "04:00 PM",
   "05:00 PM",
   "06:00 PM",
+  "07:00 PM",
+  "08:00 PM",
+  "09:00 PM",
 ];
 
 const DateTimePicker = ({
